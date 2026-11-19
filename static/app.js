@@ -48,7 +48,14 @@ document.addEventListener('DOMContentLoaded', () => {
     studentPhotoImg: document.getElementById('studentPhotoImg'),
     avatarFileInput: document.getElementById('avatarFileInput'),
     badgeAnalyzingFriend: document.getElementById('badgeAnalyzingFriend'),
-    chkKeepMyProfile: document.getElementById('chkKeepMyProfile'),
+    dangerSummarySection: document.getElementById('dangerSummarySection'),
+    dangerIcon: document.getElementById('dangerIcon'),
+    dangerHeadline: document.getElementById('dangerHeadline'),
+    dangerRiskBadge: document.getElementById('dangerRiskBadge'),
+    dangerSubtext: document.getElementById('dangerSubtext'),
+    dangerSubjectsPills: document.getElementById('dangerSubjectsPills'),
+    dangerActionPlan: document.getElementById('dangerActionPlan'),
+    dangerActionHeader: document.getElementById('dangerActionHeader'),
     inputInitialOD: document.getElementById('inputInitialOD'),
     selectInitialODUnit: document.getElementById('selectInitialODUnit'),
     targetThreshold: document.getElementById('targetThreshold'),
@@ -186,31 +193,25 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function applyNewDataset(data) {
-    const keepMyProfile = el.chkKeepMyProfile ? el.chkKeepMyProfile.checked : true;
     const incomingName = (data.profile && data.profile['Student Name']) || '';
     const isFriendScrape = incomingName && incomingName !== 'Chauhan Raj K';
 
-    if (!keepMyProfile) {
-      if (data.profile && Object.keys(data.profile).length > 0) state.profile = data.profile;
-      if (el.badgeAnalyzingFriend) el.badgeAnalyzingFriend.style.display = 'none';
-    } else {
-      // Retain user's identity (Chauhan Raj K)
-      state.profile = state.profile || {};
-      if (!state.profile['Student Name']) {
-        state.profile = {
-          'Student Name': 'Chauhan Raj K',
-          'Roll No': '20241CIT0119',
-          'Batch/Section': '2024CIT02',
-          'Term': 'S5 (Odd Sem)'
-        };
-      }
-      if (isFriendScrape && el.badgeAnalyzingFriend) {
-        const guestId = (data.profile && data.profile['Roll No']) || incomingName;
-        el.badgeAnalyzingFriend.textContent = `Analyzing: ${guestId}`;
-        el.badgeAnalyzingFriend.style.display = 'inline-block';
-      } else if (!isFriendScrape && el.badgeAnalyzingFriend) {
-        el.badgeAnalyzingFriend.style.display = 'none';
-      }
+    // Retain user's identity (Chauhan Raj K) and photo by default
+    state.profile = state.profile || {};
+    if (!state.profile['Student Name']) {
+      state.profile = {
+        'Student Name': 'Chauhan Raj K',
+        'Roll No': '20241CIT0119',
+        'Batch/Section': '2024CIT02',
+        'Term': 'S5 (Odd Sem)'
+      };
+    }
+    if (isFriendScrape && el.badgeAnalyzingFriend) {
+      const guestId = (data.profile && data.profile['Roll No']) || incomingName;
+      el.badgeAnalyzingFriend.textContent = `Analyzing: ${guestId}`;
+      el.badgeAnalyzingFriend.style.display = 'inline-block';
+    } else if (!isFriendScrape && el.badgeAnalyzingFriend) {
+      el.badgeAnalyzingFriend.style.display = 'none';
     }
 
     if (data.courses && data.courses.length > 0) state.courses = data.courses;
@@ -416,10 +417,92 @@ document.addEventListener('DOMContentLoaded', () => {
     el.lblTargets.forEach(elem => elem.textContent = `${state.targetPct}%`);
 
     updateSarcasticVerdict(projectedOverallPct, criticalList);
+    renderDangerSummary(computedCourses, criticalList);
 
     // Immediately render Course Table and Weekly Schedule
     renderCoursesTable(computedCourses);
     renderSelectedDayPeriods(computedCourses);
+  }
+
+  // Early Warning & Dropout Risk Danger Summary (AT START)
+  function renderDangerSummary(computedCourses, criticalList) {
+    if (!el.dangerSummarySection) return;
+
+    if (criticalList.length > 0) {
+      el.dangerSummarySection.style.borderLeftColor = '#ef4444';
+      el.dangerSummarySection.style.background = '#fff5f5';
+      if (el.dangerIcon) el.dangerIcon.textContent = '🚨';
+      if (el.dangerHeadline) {
+        el.dangerHeadline.textContent = `Early Warning Alert: ${criticalList.length} Subject(s) at Critical Dropout & Debar Risk`;
+        el.dangerHeadline.style.color = '#b91c1c';
+      }
+      if (el.dangerRiskBadge) {
+        el.dangerRiskBadge.textContent = `HIGH DEBAR RISK (<${state.targetPct}%)`;
+        el.dangerRiskBadge.style.background = '#fee2e2';
+        el.dangerRiskBadge.style.color = '#991b1b';
+      }
+      if (el.dangerSubtext) {
+        el.dangerSubtext.textContent = `Institutional regulations mandate a strict ${state.targetPct}% attendance cutoff for semester examination eligibility. Early detection identifies vulnerable subjects before academic suspension occurs.`;
+        el.dangerSubtext.style.color = '#7f1d1d';
+      }
+
+      const criticalCourses = (computedCourses || []).filter(c => criticalList.includes(c.course_code));
+      let totalReqAtt = 0;
+      let totalReqOD = 0;
+
+      if (el.dangerSubjectsPills) {
+        el.dangerSubjectsPills.innerHTML = criticalCourses.map(c => {
+          totalReqAtt += c.requiredAttend;
+          totalReqOD += c.odsNeeded;
+          return `
+            <span style="display:inline-flex; align-items:center; gap:0.35rem; background:#fee2e2; color:#991b1b; padding:0.25rem 0.55rem; border-radius:5px; font-size:0.75rem; border:1px solid #fca5a5; font-weight:600;">
+              <span>⚠️</span>
+              <strong>${c.course_code}</strong>:
+              <span>${c.currentPct.toFixed(1)}%</span>
+              <span style="opacity:0.85;">(Need +${c.requiredAttend} classes or ${c.odsNeeded} ODs)</span>
+            </span>
+          `;
+        }).join('');
+      }
+
+      if (el.dangerActionHeader) el.dangerActionHeader.textContent = 'Immediate Recovery Plan:';
+      if (el.dangerActionPlan) {
+        el.dangerActionPlan.textContent = `Attend next ${totalReqAtt} scheduled classes or submit ${totalReqOD} signed OD slips.`;
+        el.dangerActionPlan.style.color = '#991b1b';
+      }
+    } else {
+      // Safe state
+      el.dangerSummarySection.style.borderLeftColor = '#10b981';
+      el.dangerSummarySection.style.background = '#f0fdf4';
+      if (el.dangerIcon) el.dangerIcon.textContent = '🟢';
+      if (el.dangerHeadline) {
+        el.dangerHeadline.textContent = 'Early Warning System: No Dropout or Debarment Risks Detected';
+        el.dangerHeadline.style.color = '#065f46';
+      }
+      if (el.dangerRiskBadge) {
+        el.dangerRiskBadge.textContent = `ALL SUBJECTS SAFE (≥${state.targetPct}%)`;
+        el.dangerRiskBadge.style.background = '#d1fae5';
+        el.dangerRiskBadge.style.color = '#065f46';
+      }
+      if (el.dangerSubtext) {
+        el.dangerSubtext.textContent = `All enrolled courses satisfy the mandatory ${state.targetPct}% examination eligibility cutoff. You currently have safe bunks to spare across your subjects.`;
+        el.dangerSubtext.style.color = '#065f46';
+      }
+
+      if (el.dangerSubjectsPills) {
+        el.dangerSubjectsPills.innerHTML = `
+          <span style="display:inline-flex; align-items:center; gap:0.35rem; background:#d1fae5; color:#065f46; padding:0.25rem 0.6rem; border-radius:5px; font-size:0.75rem; font-weight:600;">
+            ✓ 100% courses eligible for End-Semester Examinations
+          </span>
+        `;
+      }
+
+      if (el.dangerActionHeader) el.dangerActionHeader.textContent = 'Status:';
+      if (el.dangerActionPlan) {
+        el.dangerActionPlan.textContent = 'Good academic standing. Zero recovery actions required.';
+        el.dangerActionPlan.style.color = '#065f46';
+      }
+    }
   }
 
   function updateSarcasticVerdict(pct, criticalList) {
@@ -1212,12 +1295,14 @@ document.addEventListener('DOMContentLoaded', () => {
     el.playwrightTerminalLogs.innerHTML = '';
     el.btnRunPlaywright.disabled = true;
 
+    const isHeaded = el.chkHeadedBrowser ? el.chkHeadedBrowser.checked : true;
+
     updateBrowserViewport(
       '/static/screenshots/login_page.png',
       'https://presidencyuniversity.linways.com/ams/student/login',
-      `[0.1s] Launching Playwright Chromium & opening Presidency University AMS Portal...`
+      isHeaded ? `[0.1s] Launching visible Chromium browser window on desktop...` : `[0.1s] Launching Playwright Chromium & opening Presidency University AMS Portal...`
     );
-    appendTerminalLog(`[0.1s] Launching Playwright Chromium in headless mode...`);
+    appendTerminalLog(isHeaded ? `[0.1s] 🖥️ Launching visible Chromium browser window on your desktop...` : `[0.1s] Launching Playwright Chromium in headless mode...`);
 
     // Stream visual steps with real-time screenshot switching
     setTimeout(() => {
@@ -1267,7 +1352,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 5800);
 
     try {
-      const isHeaded = el.chkHeadedBrowser ? el.chkHeadedBrowser.checked : false;
       const res = await fetch('/api/scrape', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

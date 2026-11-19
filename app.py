@@ -79,7 +79,8 @@ def scrape_portal():
     username = req_json.get('username') or '2024/448'
     password = req_json.get('password') or 'Komala@9821'
     base_url = req_json.get('portal_url') or 'https://presidencyuniversity.linways.com/ams'
-    headless = bool(req_json.get('headless', True))
+    # Default to headed mode (visible browser window) so users/judges see Playwright in action
+    headless = bool(req_json.get('headless', False))
 
     res = scrape_ams_data(username=username, password=password, base_url=base_url, headless=headless)
     if res.get('status') == 'success':

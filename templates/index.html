@@ -118,6 +118,33 @@
       </div>
     </section>
 
+    <!-- Early Warning & Dropout Risk Danger Summary (AT START) -->
+    <section class="danger-summary-card card" id="dangerSummarySection" style="margin-bottom: 1.25rem; padding: 1.1rem 1.25rem; border-left: 5px solid #ef4444; background: #fff5f5; transition: all 0.25s ease;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem;">
+        <div style="display:flex; gap:0.85rem; align-items:flex-start; max-width:760px;">
+          <span style="font-size:1.85rem; line-height:1;" id="dangerIcon">🚨</span>
+          <div>
+            <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+              <h2 style="font-size:1.08rem; font-weight:800; color:#b91c1c; margin:0;" id="dangerHeadline">Early Warning Alert: Dropout & Exam Debarment Risk Detected</h2>
+              <span class="badge" style="background:#fee2e2; color:#991b1b; font-weight:700; font-size:0.72rem; padding:0.18rem 0.55rem; border-radius:4px;" id="dangerRiskBadge">HIGH RISK (&lt;75%)</span>
+            </div>
+            <p style="margin:0.35rem 0 0.5rem 0; font-size:0.84rem; color:#7f1d1d; line-height:1.45;" id="dangerSubtext">
+              Institutional policy requires minimum 75% attendance to sit for end-semester examinations. Early detection identifies vulnerable subjects before academic debarment occurs.
+            </p>
+            <div style="display:flex; gap:0.45rem; flex-wrap:wrap;" id="dangerSubjectsPills">
+              <!-- Dynamically populated danger pills -->
+            </div>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:flex-end; text-align:right; min-width:210px;">
+          <div style="font-size:0.75rem; color:#7f1d1d; font-weight:600;" id="dangerActionHeader">Recommended Action Plan:</div>
+          <div style="font-size:0.85rem; font-weight:700; color:#991b1b; margin-top:0.25rem;" id="dangerActionPlan">
+            Attend next scheduled classes or claim ODs
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Key Metrics Grid -->
     <section class="metrics-grid">
       <div class="metric-card card">
@@ -401,14 +428,10 @@
             </div>
           </div>
 
-          <div style="margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
-            <label style="display:flex; align-items:center; gap:0.4rem; font-size:0.8rem; cursor:pointer; color:var(--text-secondary);">
-              <input type="checkbox" id="chkHeadedBrowser">
-              <span>Show live Chromium window on desktop (Headed mode)</span>
-            </label>
-            <label style="display:flex; align-items:center; gap:0.4rem; font-size:0.8rem; cursor:pointer; color:var(--accent); font-weight: 600;" title="Preserves Chauhan Raj K's photo, name and identity on the dashboard even when scraping your friend's credentials">
-              <input type="checkbox" id="chkKeepMyProfile" checked>
-              <span>Keep my photo & identity in dashboard (for friend's demo)</span>
+          <div style="margin-bottom: 0.85rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+            <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.85rem; cursor:pointer; color:#0369a1; font-weight:700; background:#f0f9ff; padding:0.45rem 0.85rem; border-radius:6px; border:1px solid #bae6fd;">
+              <input type="checkbox" id="chkHeadedBrowser" checked>
+              <span>🖥️ Pop Up Real Visible Chromium Window on Desktop (Watch Live Playwright Automation)</span>
             </label>
           </div>
 

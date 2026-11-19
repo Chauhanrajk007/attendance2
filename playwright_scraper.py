@@ -221,8 +221,9 @@ def scrape_ams_data(username, password, base_url='https://presidencyuniversity.l
     with sync_playwright() as p:
         browser = None
         try:
-            log("Launching browser...")
-            browser = p.chromium.launch(headless=headless)
+            log(f"Launching Chromium browser (Visible Headed Mode: {not headless})...")
+            slow_mo = 300 if not headless else 0
+            browser = p.chromium.launch(headless=headless, slow_mo=slow_mo)
             context = browser.new_context()
             page = context.new_page()
 
