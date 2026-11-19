@@ -7,6 +7,7 @@ Extracts:
 """
 
 import sys
+import os
 import re
 import json
 import time
@@ -218,6 +219,7 @@ def scrape_ams_data(username, password, base_url='https://presidencyuniversity.l
     }
 
     with sync_playwright() as p:
+        browser = None
         try:
             log("Launching browser...")
             browser = p.chromium.launch(headless=headless)
@@ -253,7 +255,6 @@ def scrape_ams_data(username, password, base_url='https://presidencyuniversity.l
                     err_text = error_elem.inner_text().strip()
                 if not err_text:
                     err_text = "Invalid credentials or login timeout. Please verify username & password."
-                browser.close()
                 result['message'] = err_text
                 return result
 
@@ -298,7 +299,6 @@ def scrape_ams_data(username, password, base_url='https://presidencyuniversity.l
                 log(f"Calendar fetch notice: {e}. Using calculated calendar.")
                 result['calendar'] = {'last_working_day': '2026-12-01', 'events': []}
 
-            browser.close()
             result['status'] = 'success'
             result['live_screenshots'] = {
                 'login': '/static/screenshots/live_login.png',
@@ -314,6 +314,12 @@ def scrape_ams_data(username, password, base_url='https://presidencyuniversity.l
             log(f"Error encountered during scraping: {str(e)}")
             result['message'] = str(e)
             return result
+        finally:
+            if browser:
+                try:
+                    browser.close()
+                except Exception:
+                    pass
 
 
 if __name__ == '__main__':

@@ -248,6 +248,10 @@ body {
   cursor: pointer;
   color: var(--text-secondary);
   transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  user-select: none;
 }
 
 .od-day-pill:hover {
@@ -260,6 +264,41 @@ body {
   color: #ffffff;
   border-color: #0284c7;
   box-shadow: 0 1px 3px rgba(2, 132, 199, 0.25);
+}
+
+.od-count-badge {
+  background-color: #ffffff;
+  color: #0284c7;
+  font-size: 0.62rem;
+  font-weight: 800;
+  padding: 0.05rem 0.25rem;
+  border-radius: 9999px;
+  line-height: 1;
+  display: none;
+}
+
+.od-day-pill.active .od-count-badge {
+  display: inline-block;
+}
+
+.od-pill-dec {
+  font-size: 0.75rem;
+  font-weight: 900;
+  line-height: 1;
+  padding: 0 0.2rem;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  display: none;
+  margin-left: 0.1rem;
+}
+
+.od-pill-dec:hover {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.od-day-pill.active .od-pill-dec {
+  display: inline-block;
 }
 
 .od-highlight-box label {

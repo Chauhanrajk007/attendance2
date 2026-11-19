@@ -14,9 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
     calendar: { last_working_day: '2026-12-01', events: [] },
     projections: null,
     adjustments: {}, // { course_code: { bunk: 0, attend: 0, od: 0 } }
+    manualAdjustments: {}, // table manual adjustments
     periodActions: {}, // { "Monday-1": "bunk"|"od"|"attend" }
     selectedDay: 'Friday',
     activeOdDays: [],
+    odDayCounts: { Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0, Saturday: 0 },
     targetPct: 75.0,
     useDL: true,
     lastWorkingDay: '2026-12-01',
@@ -42,6 +44,11 @@ document.addEventListener('DOMContentLoaded', () => {
     studentBatch: document.getElementById('studentBatch'),
     studentTerm: document.getElementById('studentTerm'),
     studentInitials: document.getElementById('studentInitials'),
+    avatarClickContainer: document.getElementById('avatarClickContainer'),
+    studentPhotoImg: document.getElementById('studentPhotoImg'),
+    avatarFileInput: document.getElementById('avatarFileInput'),
+    badgeAnalyzingFriend: document.getElementById('badgeAnalyzingFriend'),
+    chkKeepMyProfile: document.getElementById('chkKeepMyProfile'),
     inputInitialOD: document.getElementById('inputInitialOD'),
     selectInitialODUnit: document.getElementById('selectInitialODUnit'),
     targetThreshold: document.getElementById('targetThreshold'),
@@ -179,7 +186,33 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function applyNewDataset(data) {
-    if (data.profile && Object.keys(data.profile).length > 0) state.profile = data.profile;
+    const keepMyProfile = el.chkKeepMyProfile ? el.chkKeepMyProfile.checked : true;
+    const incomingName = (data.profile && data.profile['Student Name']) || '';
+    const isFriendScrape = incomingName && incomingName !== 'Chauhan Raj K';
+
+    if (!keepMyProfile) {
+      if (data.profile && Object.keys(data.profile).length > 0) state.profile = data.profile;
+      if (el.badgeAnalyzingFriend) el.badgeAnalyzingFriend.style.display = 'none';
+    } else {
+      // Retain user's identity (Chauhan Raj K)
+      state.profile = state.profile || {};
+      if (!state.profile['Student Name']) {
+        state.profile = {
+          'Student Name': 'Chauhan Raj K',
+          'Roll No': '20241CIT0119',
+          'Batch/Section': '2024CIT02',
+          'Term': 'S5 (Odd Sem)'
+        };
+      }
+      if (isFriendScrape && el.badgeAnalyzingFriend) {
+        const guestId = (data.profile && data.profile['Roll No']) || incomingName;
+        el.badgeAnalyzingFriend.textContent = `Analyzing: ${guestId}`;
+        el.badgeAnalyzingFriend.style.display = 'inline-block';
+      } else if (!isFriendScrape && el.badgeAnalyzingFriend) {
+        el.badgeAnalyzingFriend.style.display = 'none';
+      }
+    }
+
     if (data.courses && data.courses.length > 0) state.courses = data.courses;
     if (data.overall) state.overall = data.overall;
     if (data.timetable && Object.keys(data.timetable).length > 0) {
@@ -192,6 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     state.adjustments = {};
     state.periodActions = {};
+    state.manualAdjustments = {};
     state.courses.forEach(c => {
       state.adjustments[c.course_code] = { bunk: 0, attend: 0, od: 0 };
     });
@@ -215,16 +249,27 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function renderProfile() {
-    const p = state.profile;
-    const name = p['Student Name'] || 'Student User';
-    el.studentName.textContent = name;
-    el.studentRoll.textContent = `Roll: ${p['Roll No'] || '20241CIT0119'}`;
-    el.studentBatch.textContent = `Batch: ${p['Batch/Section'] || '2024CIT02'}`;
-    el.studentTerm.textContent = `Term: ${p['Term'] || 'S5'}`;
+    // Check for saved custom profile photo in localStorage
+    const savedPhoto = localStorage.getItem('my_dashboard_photo');
+    if (savedPhoto && el.studentPhotoImg) {
+      el.studentPhotoImg.src = savedPhoto;
+      el.studentPhotoImg.style.display = 'block';
+      if (el.studentInitials) el.studentInitials.style.display = 'none';
+    } else {
+      if (el.studentPhotoImg) el.studentPhotoImg.style.display = 'none';
+      if (el.studentInitials) el.studentInitials.style.display = 'flex';
+    }
+
+    const p = state.profile || {};
+    const name = p['Student Name'] || 'Chauhan Raj K';
+    if (el.studentName) el.studentName.textContent = name;
+    if (el.studentRoll) el.studentRoll.textContent = `Roll: ${p['Roll No'] || '20241CIT0119'}`;
+    if (el.studentBatch) el.studentBatch.textContent = `Batch: ${p['Batch/Section'] || '2024CIT02'}`;
+    if (el.studentTerm) el.studentTerm.textContent = `Term: ${p['Term'] || 'S5 (Odd Sem)'}`;
 
     const initials = name.split(' ').map(n => n[0]).filter(Boolean).slice(0, 2).join('').toUpperCase();
-    el.studentInitials.textContent = initials || 'ST';
-    el.coursesCountBadge.textContent = state.courses.length;
+    if (el.studentInitials) el.studentInitials.textContent = initials || 'CR';
+    if (el.coursesCountBadge) el.coursesCountBadge.textContent = state.courses.length;
   }
 
   async function fetchProjections() {
@@ -518,8 +563,9 @@ document.addEventListener('DOMContentLoaded', () => {
     tbody.querySelectorAll('.btn-bunk-inc').forEach(btn => {
       btn.addEventListener('click', () => {
         const code = btn.dataset.code;
-        state.adjustments[code] = state.adjustments[code] || { bunk: 0, attend: 0, od: 0 };
-        state.adjustments[code].bunk += 1;
+        state.manualAdjustments[code] = state.manualAdjustments[code] || { bunk: 0, attend: 0, od: 0 };
+        state.manualAdjustments[code].bunk += 1;
+        recalculateAllAdjustments();
         calculateAndRender();
       });
     });
@@ -527,8 +573,9 @@ document.addEventListener('DOMContentLoaded', () => {
     tbody.querySelectorAll('.btn-bunk-dec').forEach(btn => {
       btn.addEventListener('click', () => {
         const code = btn.dataset.code;
-        state.adjustments[code] = state.adjustments[code] || { bunk: 0, attend: 0, od: 0 };
-        state.adjustments[code].bunk = Math.max(0, state.adjustments[code].bunk - 1);
+        state.manualAdjustments[code] = state.manualAdjustments[code] || { bunk: 0, attend: 0, od: 0 };
+        state.manualAdjustments[code].bunk = Math.max(0, state.manualAdjustments[code].bunk - 1);
+        recalculateAllAdjustments();
         calculateAndRender();
       });
     });
@@ -536,8 +583,9 @@ document.addEventListener('DOMContentLoaded', () => {
     tbody.querySelectorAll('.btn-att-inc').forEach(btn => {
       btn.addEventListener('click', () => {
         const code = btn.dataset.code;
-        state.adjustments[code] = state.adjustments[code] || { bunk: 0, attend: 0, od: 0 };
-        state.adjustments[code].attend += 1;
+        state.manualAdjustments[code] = state.manualAdjustments[code] || { bunk: 0, attend: 0, od: 0 };
+        state.manualAdjustments[code].attend += 1;
+        recalculateAllAdjustments();
         calculateAndRender();
       });
     });
@@ -545,8 +593,9 @@ document.addEventListener('DOMContentLoaded', () => {
     tbody.querySelectorAll('.btn-att-dec').forEach(btn => {
       btn.addEventListener('click', () => {
         const code = btn.dataset.code;
-        state.adjustments[code] = state.adjustments[code] || { bunk: 0, attend: 0, od: 0 };
-        state.adjustments[code].attend = Math.max(0, state.adjustments[code].attend - 1);
+        state.manualAdjustments[code] = state.manualAdjustments[code] || { bunk: 0, attend: 0, od: 0 };
+        state.manualAdjustments[code].attend = Math.max(0, state.manualAdjustments[code].attend - 1);
+        recalculateAllAdjustments();
         calculateAndRender();
       });
     });
@@ -554,8 +603,9 @@ document.addEventListener('DOMContentLoaded', () => {
     tbody.querySelectorAll('.btn-od-inc').forEach(btn => {
       btn.addEventListener('click', () => {
         const code = btn.dataset.code;
-        state.adjustments[code] = state.adjustments[code] || { bunk: 0, attend: 0, od: 0 };
-        state.adjustments[code].od += 1;
+        state.manualAdjustments[code] = state.manualAdjustments[code] || { bunk: 0, attend: 0, od: 0 };
+        state.manualAdjustments[code].od += 1;
+        recalculateAllAdjustments();
         calculateAndRender();
       });
     });
@@ -563,8 +613,9 @@ document.addEventListener('DOMContentLoaded', () => {
     tbody.querySelectorAll('.btn-od-dec').forEach(btn => {
       btn.addEventListener('click', () => {
         const code = btn.dataset.code;
-        state.adjustments[code] = state.adjustments[code] || { bunk: 0, attend: 0, od: 0 };
-        state.adjustments[code].od = Math.max(0, state.adjustments[code].od - 1);
+        state.manualAdjustments[code] = state.manualAdjustments[code] || { bunk: 0, attend: 0, od: 0 };
+        state.manualAdjustments[code].od = Math.max(0, state.manualAdjustments[code].od - 1);
+        recalculateAllAdjustments();
         calculateAndRender();
       });
     });
@@ -573,8 +624,9 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.addEventListener('click', () => {
         const code = btn.dataset.code;
         const needed = parseInt(btn.dataset.ods) || 1;
-        state.adjustments[code] = state.adjustments[code] || { bunk: 0, attend: 0, od: 0 };
-        state.adjustments[code].od = needed;
+        state.manualAdjustments[code] = state.manualAdjustments[code] || { bunk: 0, attend: 0, od: 0 };
+        state.manualAdjustments[code].od = needed;
+        recalculateAllAdjustments();
         calculateAndRender();
         showToast(`Applied +${needed} expected ODs to ${code} to reach 75%!`);
       });
@@ -839,49 +891,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Batch Day Actions
-  el.btnDayBunkAll.addEventListener('click', () => {
-    const day = state.selectedDay;
-    const periods = state.timetable[day] || [];
-    periods.forEach(p => {
-      if (!p.is_free && p.course_code && p.course_code !== 'FREE') {
-        state.periodActions[`${day}-${p.period}`] = 'bunk';
-      }
-    });
-    syncPeriodActionsToAdjustments();
-    calculateAndRender();
-    showToast(`Bunked full day for ${day}! 🏖️`);
-  });
-
-  el.btnDayODAll.addEventListener('click', () => {
-    const day = state.selectedDay;
-    const periods = state.timetable[day] || [];
-    periods.forEach(p => {
-      if (!p.is_free && p.course_code && p.course_code !== 'FREE') {
-        state.periodActions[`${day}-${p.period}`] = 'od';
-      }
-    });
-    syncPeriodActionsToAdjustments();
-    calculateAndRender();
-    showToast(`Marked full day ${day} as On-Duty (OD)! 🎖️`);
-  });
-
-  el.btnDayReset.addEventListener('click', () => {
-    const day = state.selectedDay;
-    const periods = state.timetable[day] || [];
-    periods.forEach(p => {
-      delete state.periodActions[`${day}-${p.period}`];
-    });
-    syncPeriodActionsToAdjustments();
-    calculateAndRender();
-    showToast(`Cleared selections for ${day}.`);
-  });
-
-  function syncPeriodActionsToAdjustments() {
+  // Master adjustments aggregator: sums Event OD Days, Day Simulator Period actions, and Table Manual edits
+  function recalculateAllAdjustments() {
     state.courses.forEach(c => {
       state.adjustments[c.course_code] = { bunk: 0, attend: 0, od: 0 };
     });
 
+    // 1. Apply Event OD Days Claimed (Supports multiple OD occurrences of each day)
+    for (const [day, count] of Object.entries(state.odDayCounts)) {
+      if (count > 0) {
+        const periods = state.timetable[day] || [];
+        const nonFree = periods.filter(p => !p.is_free && p.course_code && p.course_code !== 'FREE');
+        nonFree.forEach(p => {
+          if (state.adjustments[p.course_code]) {
+            state.adjustments[p.course_code].od += count;
+          }
+        });
+      }
+    }
+
+    // 2. Apply Period Actions from Day Simulator (Supports marking multiple periods on the same day as OD)
     for (const [key, act] of Object.entries(state.periodActions)) {
       const [day, periodStr] = key.split('-');
       const periodNum = parseInt(periodStr);
@@ -896,76 +925,162 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     }
+
+    // 3. Apply Course Table Manual Adjustments (+ / -)
+    for (const [code, adj] of Object.entries(state.manualAdjustments)) {
+      if (state.adjustments[code]) {
+        state.adjustments[code].bunk += (adj.bunk || 0);
+        state.adjustments[code].attend += (adj.attend || 0);
+        state.adjustments[code].od += (adj.od || 0);
+      }
+    }
   }
+
+  function syncPeriodActionsToAdjustments() {
+    recalculateAllAdjustments();
+  }
+
+  // Batch Day Actions
+  el.btnDayBunkAll.addEventListener('click', () => {
+    const day = state.selectedDay;
+    const periods = state.timetable[day] || [];
+    periods.forEach(p => {
+      if (!p.is_free && p.course_code && p.course_code !== 'FREE') {
+        state.periodActions[`${day}-${p.period}`] = 'bunk';
+      }
+    });
+    recalculateAllAdjustments();
+    calculateAndRender();
+    showToast(`Bunked full day for ${day}! 🏖️`);
+  });
+
+  el.btnDayODAll.addEventListener('click', () => {
+    const day = state.selectedDay;
+    const periods = state.timetable[day] || [];
+    periods.forEach(p => {
+      if (!p.is_free && p.course_code && p.course_code !== 'FREE') {
+        state.periodActions[`${day}-${p.period}`] = 'od';
+      }
+    });
+    // Also increment day OD count so multiple full day ODs stack seamlessly
+    state.odDayCounts[day] = (state.odDayCounts[day] || 0) + 1;
+    syncOdDays();
+    showToast(`Marked full day ${day} as On-Duty (OD) (Total: ${state.odDayCounts[day]} day(s))! 🎖️`);
+  });
+
+  el.btnDayReset.addEventListener('click', () => {
+    const day = state.selectedDay;
+    const periods = state.timetable[day] || [];
+    periods.forEach(p => {
+      delete state.periodActions[`${day}-${p.period}`];
+    });
+    state.odDayCounts[day] = 0;
+    syncOdDays();
+    showToast(`Cleared selections and ODs for ${day}.`);
+  });
 
   el.btnResetAllBunks.addEventListener('click', () => {
     state.periodActions = {};
-    state.courses.forEach(c => {
-      state.adjustments[c.course_code] = { bunk: 0, attend: 0, od: 0 };
-    });
+    state.manualAdjustments = {};
+    Object.keys(state.odDayCounts).forEach(k => state.odDayCounts[k] = 0);
     if (el.inputInitialOD) el.inputInitialOD.value = '0';
-    calculateAndRender();
+    syncOdDays();
     showToast('Simulation reset to real attendance.');
   });
 
-  // Event OD Days Selector (Directly select which day was missed)
-  function syncOdDays() {
-    state.courses.forEach(c => {
-      state.adjustments[c.course_code] = state.adjustments[c.course_code] || { bunk: 0, attend: 0, od: 0 };
-      state.adjustments[c.course_code].od = 0;
+  // Event OD Days Selector (Supports >1 OD per day)
+  function updateOdPillUI() {
+    if (!el.odDayPillBtns) return;
+    el.odDayPillBtns.forEach(btn => {
+      const day = btn.dataset.day;
+      const count = state.odDayCounts[day] || 0;
+      const badge = btn.querySelector('.od-count-badge');
+      if (count > 0) {
+        btn.classList.add('active');
+        if (badge) badge.textContent = `×${count}`;
+      } else {
+        btn.classList.remove('active');
+        if (badge) badge.textContent = '';
+      }
     });
+  }
+
+  function syncOdDays() {
+    recalculateAllAdjustments();
 
     let totalCredited = 0;
-    const shortNames = [];
+    const summaryParts = [];
 
-    state.activeOdDays.forEach(day => {
-      const periods = state.timetable[day] || [];
-      const nonFree = periods.filter(p => !p.is_free && p.course_code && p.course_code !== 'FREE');
-      nonFree.forEach(p => {
-        if (state.adjustments[p.course_code]) {
-          state.adjustments[p.course_code].od += 1;
-          totalCredited += 1;
-        }
-      });
-      shortNames.push(day.slice(0, 3));
-    });
+    for (const [day, count] of Object.entries(state.odDayCounts)) {
+      if (count > 0) {
+        const periods = state.timetable[day] || [];
+        const nonFree = periods.filter(p => !p.is_free && p.course_code && p.course_code !== 'FREE');
+        totalCredited += (nonFree.length * count);
+        summaryParts.push(count > 1 ? `${day.slice(0, 3)} (×${count})` : day.slice(0, 3));
+      }
+    }
+
+    // Keep activeOdDays synced
+    state.activeOdDays = [];
+    for (const [day, count] of Object.entries(state.odDayCounts)) {
+      for (let i = 0; i < count; i++) state.activeOdDays.push(day);
+    }
 
     if (el.lblOdHoursCount) el.lblOdHoursCount.textContent = `${totalCredited} hrs credited`;
     if (el.lblOdDaysSummary) {
-      if (shortNames.length > 0) {
-        el.lblOdDaysSummary.textContent = `Event OD: ${shortNames.join(', ')} (${totalCredited} hrs credited)`;
+      if (summaryParts.length > 0) {
+        el.lblOdDaysSummary.textContent = `Event OD: ${summaryParts.join(', ')} (${totalCredited} hrs credited)`;
       } else {
         el.lblOdDaysSummary.textContent = 'Select missed day(s) for event/fest';
       }
     }
 
+    updateOdPillUI();
     calculateAndRender();
   }
 
   if (el.odDayPillBtns) {
     el.odDayPillBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const day = btn.dataset.day;
-        const idx = state.activeOdDays.indexOf(day);
-        if (idx >= 0) {
-          state.activeOdDays.splice(idx, 1);
-          btn.classList.remove('active');
-        } else {
-          state.activeOdDays.push(day);
-          btn.classList.add('active');
-        }
+      const day = btn.dataset.day;
+
+      // Left click: increment count (+1)
+      btn.addEventListener('click', (e) => {
+        if (e.target.classList.contains('od-pill-dec')) return;
+        state.odDayCounts[day] = (state.odDayCounts[day] || 0) + 1;
         syncOdDays();
-        showToast(state.activeOdDays.includes(day) ? `Credited OD for all ${day} classes! 🎖️` : `Removed OD for ${day}.`);
+        showToast(`Credited OD for ${day} (Total: ${state.odDayCounts[day]} day(s))! 🎖️`);
       });
+
+      // Right click: decrement count (-1)
+      btn.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        if ((state.odDayCounts[day] || 0) > 0) {
+          state.odDayCounts[day] -= 1;
+          syncOdDays();
+          showToast(`Reduced OD for ${day} (Remaining: ${state.odDayCounts[day]} day(s)).`);
+        }
+      });
+
+      // Minus button inside pill
+      const decBtn = btn.querySelector('.od-pill-dec');
+      if (decBtn) {
+        decBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if ((state.odDayCounts[day] || 0) > 0) {
+            state.odDayCounts[day] -= 1;
+            syncOdDays();
+            showToast(`Reduced OD for ${day} (Remaining: ${state.odDayCounts[day]} day(s)).`);
+          }
+        });
+      }
     });
   }
 
   if (el.btnClearOdDays) {
     el.btnClearOdDays.addEventListener('click', () => {
-      state.activeOdDays = [];
-      el.odDayPillBtns.forEach(b => b.classList.remove('active'));
+      Object.keys(state.odDayCounts).forEach(k => state.odDayCounts[k] = 0);
       syncOdDays();
-      showToast('Cleared event OD days.');
+      showToast('Cleared all event OD days.');
     });
   }
 
@@ -1366,6 +1481,27 @@ document.addEventListener('DOMContentLoaded', () => {
       showToast(`Upload failed: ${err.message}`);
     }
   });
+
+  // Profile Photo Avatar Upload & Persistence in LocalStorage
+  if (el.avatarClickContainer && el.avatarFileInput) {
+    el.avatarClickContainer.addEventListener('click', () => {
+      el.avatarFileInput.click();
+    });
+
+    el.avatarFileInput.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          const dataUrl = evt.target.result;
+          localStorage.setItem('my_dashboard_photo', dataUrl);
+          renderProfile();
+          showToast('Updated your profile photo in dashboard! 📷');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
 
   // Initialize
   loadInitialData();
