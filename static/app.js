@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // DOM Elements
   const el = {
     studentName: document.getElementById('studentName'),
+    btnEditStudentName: document.getElementById('btnEditStudentName'),
     studentRoll: document.getElementById('studentRoll'),
     studentBatch: document.getElementById('studentBatch'),
     studentTerm: document.getElementById('studentTerm'),
@@ -193,25 +194,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function applyNewDataset(data) {
-    const incomingName = (data.profile && data.profile['Student Name']) || '';
-    const isFriendScrape = incomingName && incomingName !== 'Chauhan Raj K';
-
-    // Retain user's identity (Chauhan Raj K) and photo by default
-    state.profile = state.profile || {};
-    if (!state.profile['Student Name']) {
-      state.profile = {
-        'Student Name': 'Chauhan Raj K',
-        'Roll No': '20241CIT0119',
-        'Batch/Section': '2024CIT02',
-        'Term': 'S5 (Odd Sem)'
-      };
-    }
-    if (isFriendScrape && el.badgeAnalyzingFriend) {
-      const guestId = (data.profile && data.profile['Roll No']) || incomingName;
-      el.badgeAnalyzingFriend.textContent = `Analyzing: ${guestId}`;
-      el.badgeAnalyzingFriend.style.display = 'inline-block';
-    } else if (!isFriendScrape && el.badgeAnalyzingFriend) {
-      el.badgeAnalyzingFriend.style.display = 'none';
+    if (data.profile && Object.keys(data.profile).length > 0) {
+      state.profile = data.profile;
     }
 
     if (data.courses && data.courses.length > 0) state.courses = data.courses;
@@ -272,6 +256,20 @@ document.addEventListener('DOMContentLoaded', () => {
     if (el.studentInitials) el.studentInitials.textContent = initials || 'CR';
     if (el.coursesCountBadge) el.coursesCountBadge.textContent = state.courses.length;
   }
+
+  // Allow clicking student name or ✏️ Edit button to update dashboard name anytime
+  const updateStudentNameHandler = () => {
+    const cur = (state.profile && state.profile['Student Name']) || (el.studentName && el.studentName.textContent) || 'Student User';
+    const newName = prompt('Enter updated Student Name for dashboard:', cur);
+    if (newName && newName.trim()) {
+      state.profile = state.profile || {};
+      state.profile['Student Name'] = newName.trim();
+      renderProfile();
+      showToast(`Updated student name to "${newName.trim()}"! 👤`);
+    }
+  };
+  if (el.studentName) el.studentName.addEventListener('click', updateStudentNameHandler);
+  if (el.btnEditStudentName) el.btnEditStudentName.addEventListener('click', updateStudentNameHandler);
 
   async function fetchProjections() {
     try {
