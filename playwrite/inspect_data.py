@@ -11,8 +11,9 @@ def inspect_pages():
 
         print("Logging in...")
         page.goto('https://presidencyuniversity.linways.com/ams/student/login', wait_until='networkidle')
-        page.fill('#username', '2024/448')
-        page.fill('#password', 'Komala@9821')
+        import os
+        page.fill('#username', os.environ.get('STUDENT_USER', ''))
+        page.fill('#password', os.environ.get('STUDENT_PASS', ''))
         page.click('#loginBtn')
         page.wait_for_url('**/ams/student/**', timeout=15000)
         time.sleep(2)

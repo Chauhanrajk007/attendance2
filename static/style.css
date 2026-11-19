@@ -1542,3 +1542,158 @@ body {
   background-color: #e0f2fe !important;
   border-color: #0284c7 !important;
 }
+
+/* ==========================================================================
+   MOBILE & TOUCH RESPONSIVE STYLES (Phones / iOS / Android)
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Navbar */
+  .navbar {
+    padding: 0.5rem 0.75rem;
+  }
+  .nav-container {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .brand-badge {
+    display: none;
+  }
+  .nav-actions {
+    width: 100%;
+    justify-content: flex-end;
+    gap: 0.35rem;
+  }
+  .nav-actions .btn {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  /* Main Container */
+  .main-container {
+    padding: 0.75rem 0.5rem;
+  }
+
+  /* Onboarding Hero on Phone */
+  .welcome-onboarding {
+    padding: 1.75rem 1rem !important;
+    margin-top: 0.5rem;
+  }
+  .welcome-onboarding h2 {
+    font-size: 1.25rem !important;
+  }
+  .welcome-onboarding p {
+    font-size: 0.85rem !important;
+    margin-bottom: 1.25rem !important;
+  }
+  .welcome-onboarding div[style*="grid-template-columns:1fr 1fr"],
+  .welcome-onboarding div[style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+
+  /* Playwright Modal & Viewport on Mobile Phone */
+  .modal-card {
+    width: 95vw !important;
+    max-width: 95vw !important;
+    padding: 0.85rem !important;
+    margin: 0.75rem auto !important;
+    max-height: 92vh !important;
+    overflow-y: auto !important;
+  }
+  .modal-card form div[style*="grid-template-columns: 1fr 1fr"],
+  .modal-card form div[style*="grid-template-columns:1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem !important;
+  }
+  .browser-viewport-screen {
+    height: 175px !important;
+  }
+  .browser-address-bar {
+    max-width: 140px;
+  }
+  .browser-address-bar input {
+    font-size: 0.65rem;
+  }
+  .browser-status-badge {
+    font-size: 0.65rem;
+    padding: 0.15rem 0.35rem;
+  }
+  .terminal-body {
+    max-height: 120px;
+    font-size: 0.7rem;
+  }
+
+  /* Student Profile & OD Pills */
+  .student-header {
+    padding: 1rem 0.75rem;
+  }
+  .student-info-grid {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  .settings-pill-group {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.6rem;
+  }
+  .setting-item {
+    width: 100%;
+    min-width: 0 !important;
+  }
+  .od-days-pills {
+    flex-wrap: wrap;
+    gap: 0.25rem !important;
+  }
+  .od-day-pill {
+    padding: 0.25rem 0.45rem;
+    font-size: 0.75rem;
+  }
+
+  /* Metrics Grid */
+  .metrics-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.6rem !important;
+  }
+  .metric-card {
+    padding: 0.85rem !important;
+  }
+  .metric-huge {
+    font-size: 1.45rem !important;
+  }
+
+  /* Course Table: Touch-friendly Horizontal Scroll */
+  .table-responsive {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+  .courses-table {
+    min-width: 620px;
+  }
+
+  /* Day Simulator & Periods */
+  .day-batch-actions {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+  .day-batch-actions .btn {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.72rem;
+  }
+  .day-periods-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Danger Alert Card on Phone */
+  .danger-summary-card {
+    padding: 0.85rem !important;
+  }
+  .danger-summary-card h2 {
+    font-size: 0.95rem !important;
+  }
+  .danger-summary-card div[style*="align-items:flex-end"] {
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+}

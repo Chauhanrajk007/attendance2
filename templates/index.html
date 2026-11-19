@@ -459,13 +459,13 @@
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.75rem; margin-bottom: 0.75rem;">
             <div class="form-group" style="margin-bottom:0;">
               <label class="form-label" for="amsUsername">Linways Student ID / Username</label>
-              <input type="text" id="amsUsername" class="form-input" placeholder="e.g. 2024/448" value="2024/448" required>
+              <input type="text" id="amsUsername" class="form-input" placeholder="e.g. 2024/000" value="" required autocomplete="username">
             </div>
 
             <div class="form-group" style="margin-bottom:0;">
               <label class="form-label" for="amsPassword">Portal Password</label>
               <div class="password-toggle-wrapper">
-                <input type="password" id="amsPassword" class="form-input password-input-field" placeholder="Password" value="Komala@9821" required>
+                <input type="password" id="amsPassword" class="form-input password-input-field" placeholder="Enter portal password" value="" required autocomplete="current-password">
                 <button type="button" class="btn-password-toggle" id="btnTogglePassword" title="Show/Hide Password">
                   <span id="pwToggleIcon">👁️</span>
                 </button>

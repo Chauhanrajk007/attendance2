@@ -10,8 +10,9 @@ with sync_playwright() as p:
     page.goto('https://presidencyuniversity.linways.com/ams/student/login', wait_until='networkidle')
     
     print("Filling credentials...")
-    page.fill('#username', '2024/448')
-    page.fill('#password', 'Komala@9821')
+    import os
+    page.fill('#username', os.environ.get('STUDENT_USER', ''))
+    page.fill('#password', os.environ.get('STUDENT_PASS', ''))
     page.click('#loginBtn')
     
     # Wait for response or navigation

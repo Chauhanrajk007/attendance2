@@ -268,8 +268,8 @@ def print_formatted_report(analysis):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Linways Attendance & Bunk Predictor")
-    parser.add_argument("--username", default="2024/448", help="Linways Student Username")
-    parser.add_argument("--password", default="Komala@9821", help="Linways Password")
+    parser.add_argument("--username", default="", help="Linways Student Username")
+    parser.add_argument("--password", default="", help="Linways Password")
     parser.add_argument("--headed", action="store_true", help="Run browser in visible mode")
     parser.add_argument("--target", type=float, default=75.0, help="Target attendance percentage")
     args = parser.parse_args()
