@@ -26,6 +26,9 @@
       </div>
 
       <div class="nav-actions">
+        <button class="btn btn-outline" id="btnNavResetToStart" style="display:none;" title="Start fresh with another student">
+          🔄 Start Fresh
+        </button>
         <button class="btn btn-outline" id="btnOpenUploadModal">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -46,6 +49,47 @@
 
   <!-- Main Content Layout -->
   <main class="main-container">
+    <!-- Initial Welcome / Onboarding Screen (Only Upload or Scrape at Start) -->
+    <section class="welcome-onboarding card" id="welcomeOnboardingSection" style="text-align:center; padding:3.5rem 1.5rem; margin-bottom:1.5rem; border:2px dashed #cbd5e1; background:#ffffff;">
+      <div style="max-width:640px; margin:0 auto;">
+        <div style="font-size:3.5rem; margin-bottom:0.75rem;">🎓</div>
+        <h2 style="font-size:1.65rem; font-weight:800; color:var(--text-main); margin-bottom:0.5rem; letter-spacing:-0.02em;">
+          Presidency University Attendance & Bunk Predictor
+        </h2>
+        <p style="font-size:0.92rem; color:var(--text-secondary); line-height:1.5; margin-bottom:2.2rem;">
+          Degree Defense early warning system, real-time Linways automation, and bunk simulator. To begin analyzing your academic standing, select an import option below:
+        </p>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:2rem; text-align:left;">
+          <!-- Option 1: Live Playwright Scrape -->
+          <div class="onboarding-card-btn primary-action" id="heroBtnOpenPlaywright" style="background:#f0f9ff; border:1.5px solid #bae6fd; border-radius:12px; padding:1.6rem 1.25rem; cursor:pointer; transition:all 0.2s ease;">
+            <div style="font-size:2rem; margin-bottom:0.4rem;">🤖</div>
+            <h3 style="font-size:1.05rem; font-weight:700; color:#0369a1; margin-bottom:0.35rem;">Run Playwright Scraper</h3>
+            <p style="font-size:0.78rem; color:#0c4a6e; line-height:1.45; margin-bottom:1.1rem;">
+              Automates Chromium to login to Presidency Linways AMS and fetches your official attendance report, weekly timetable & calendar.
+            </p>
+            <button type="button" class="btn btn-primary btn-sm" style="width:100%; pointer-events:none;">Connect & Scrape Live</button>
+          </div>
+
+          <!-- Option 2: Upload Files -->
+          <div class="onboarding-card-btn" id="heroBtnOpenUpload" style="background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:12px; padding:1.6rem 1.25rem; cursor:pointer; transition:all 0.2s ease;">
+            <div style="font-size:2rem; margin-bottom:0.4rem;">📁</div>
+            <h3 style="font-size:1.05rem; font-weight:700; color:var(--text-main); margin-bottom:0.35rem;">Upload Document / Photo</h3>
+            <p style="font-size:0.78rem; color:var(--text-secondary); line-height:1.45; margin-bottom:1.1rem;">
+              Upload your Linways Attendance PDF, timetable screenshot/photo, saved HTML report, or CSV export.
+            </p>
+            <button type="button" class="btn btn-outline btn-sm" style="width:100%; pointer-events:none;">Upload Attendance File</button>
+          </div>
+        </div>
+
+        <div style="font-size:0.82rem; color:var(--text-secondary);">
+          Want to test the full system right now? <button type="button" id="heroBtnLoadSample" style="color:var(--accent); font-weight:700; text-decoration:underline; background:none; border:none; cursor:pointer;">⚡ Load Presidency University Sample Dataset</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Active Dashboard Content (Appears only after Playwright Scrape or Upload) -->
+    <div id="dashboardActiveContent" style="display: none;">
     <!-- Student Profile & Settings Header (AT START) -->
     <section class="student-header card">
       <div class="student-info-grid">
@@ -396,6 +440,7 @@
         </div>
       </div>
     </section>
+    </div> <!-- /#dashboardActiveContent -->
   </main>
 
   <!-- Playwright Scraper Modal with LIVE Execution Terminal -->

@@ -1532,3 +1532,13 @@ body {
   from { transform: translateY(20px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
+
+/* Onboarding Hero Start Screen */
+.onboarding-card-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+.onboarding-card-btn.primary-action:hover {
+  background-color: #e0f2fe !important;
+  border-color: #0284c7 !important;
+}

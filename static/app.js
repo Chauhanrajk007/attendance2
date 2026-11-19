@@ -39,6 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // DOM Elements
   const el = {
+    welcomeOnboardingSection: document.getElementById('welcomeOnboardingSection'),
+    dashboardActiveContent: document.getElementById('dashboardActiveContent'),
+    btnNavResetToStart: document.getElementById('btnNavResetToStart'),
+    heroBtnOpenPlaywright: document.getElementById('heroBtnOpenPlaywright'),
+    heroBtnOpenUpload: document.getElementById('heroBtnOpenUpload'),
+    heroBtnLoadSample: document.getElementById('heroBtnLoadSample'),
     studentName: document.getElementById('studentName'),
     btnEditStudentName: document.getElementById('btnEditStudentName'),
     studentRoll: document.getElementById('studentRoll'),
@@ -194,6 +200,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function applyNewDataset(data) {
+    if (el.welcomeOnboardingSection) el.welcomeOnboardingSection.style.display = 'none';
+    if (el.dashboardActiveContent) el.dashboardActiveContent.style.display = 'block';
+    if (el.btnNavResetToStart) el.btnNavResetToStart.style.display = 'inline-flex';
+
     if (data.profile && Object.keys(data.profile).length > 0) {
       state.profile = data.profile;
     }
@@ -1585,6 +1595,38 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Initialize
-  loadInitialData();
+  // Hero Onboarding Action Listeners (Only Upload or Scrape at Start)
+  if (el.heroBtnOpenPlaywright) {
+    el.heroBtnOpenPlaywright.addEventListener('click', () => {
+      if (el.playwrightModal) el.playwrightModal.style.display = 'flex';
+    });
+  }
+
+  if (el.heroBtnOpenUpload) {
+    el.heroBtnOpenUpload.addEventListener('click', () => {
+      if (el.uploadModal) el.uploadModal.style.display = 'flex';
+    });
+  }
+
+  if (el.heroBtnLoadSample) {
+    el.heroBtnLoadSample.addEventListener('click', () => {
+      loadInitialData();
+      showToast('Loaded Presidency University campus demo data!');
+    });
+  }
+
+  if (el.btnNavResetToStart) {
+    el.btnNavResetToStart.addEventListener('click', () => {
+      if (el.welcomeOnboardingSection) el.welcomeOnboardingSection.style.display = 'block';
+      if (el.dashboardActiveContent) el.dashboardActiveContent.style.display = 'none';
+      if (el.btnNavResetToStart) el.btnNavResetToStart.style.display = 'none';
+      state.courses = [];
+      state.adjustments = {};
+      state.periodActions = {};
+      state.manualAdjustments = {};
+      showToast('Reset to start. Select Scrape or Upload to begin.');
+    });
+  }
+
+  // Initialize: Clean initial state (Only Upload or Scrape shown at start)
 });
