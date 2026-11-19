@@ -14,7 +14,15 @@ from flask import Flask, render_template, request, jsonify
 from parser import parse_attendance, parse_timetable, parse_calendar
 from predictor import calculate_course_metrics, simulate_bunk_impact, project_until_last_working_day
 from grok_service import call_grok_advisor, optimize_schedule_for_target, DEFAULT_GROK_KEY
-from playwright_scraper import scrape_ams_data
+
+try:
+    from playwright_scraper import scrape_ams_data
+except Exception as e:
+    def scrape_ams_data(*args, **kwargs):
+        return {
+            'status': 'error',
+            'message': 'Live Playwright browser automation requires a desktop environment with Chromium. In cloud/serverless, please use File Upload or the Campus Demo dataset.'
+        }
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16 MB max upload
