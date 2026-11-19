@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presidency University - Attendance & Bunk Predictor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface-hover: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.2);
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --success: #10b981;
+            --border: #334155;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); color: var(--text-main); padding: 24px; min-height: 100vh; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 16px; }
+        h1 { font-size: 1.6rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 10px; }
+        .badge-user { background: var(--surface); padding: 8px 16px; border-radius: 9999px; border: 1px solid var(--border); font-size: 0.9rem; }
+        
+        .grid-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+        .stat-card h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 8px; }
+        .stat-card .val { font-size: 1.8rem; font-weight: 700; }
+        .stat-card .sub { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
+        
+        .section-box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 24px; overflow-x: auto; }
+        .section-box h2 { font-size: 1.25rem; font-weight: 600; margin-bottom: 16px; color: #fff; display: flex; justify-content: space-between; align-items: center; }
+
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
+        th { background: #0b1329; color: var(--text-muted); padding: 12px 14px; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); }
+        td { padding: 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+        tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+        .tag { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; }
+        .tag-safe { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .tag-critical { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+        .tag-shortage { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+        .progress-bar { width: 100%; height: 8px; background: #334155; border-radius: 4px; overflow: hidden; margin-top: 6px; }
+        .progress-fill { height: 100%; border-radius: 4px; }
+
+        .timetable-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+        .day-column { background: #131d31; border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+        .day-column h4 { font-size: 1rem; color: var(--accent); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+        .hour-item { padding: 8px; background: #1e293b; border-radius: 6px; margin-bottom: 8px; font-size: 0.8rem; border-left: 3px solid var(--accent); }
+        .hour-num { font-weight: 700; color: #94a3b8; font-size: 0.75rem; }
+        .hour-subject { font-weight: 600; color: #f1f5f9; margin-top: 2px; }
+
+        .calendar-timeline { display: flex; flex-direction: column; gap: 10px; }
+        .timeline-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: #131d31; border-radius: 8px; border: 1px solid var(--border); font-size: 0.88rem; }
+        .timeline-row.today { border-color: var(--accent); background: rgba(56, 189, 248, 0.05); }
+        .timeline-row.last-day { border-color: var(--danger); background: rgba(239, 68, 68, 0.05); }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <div>
+            <h1>🎓 Linways Attendance & Bunk Predictor</h1>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Presidency University AMS Portal • Automaton & Intelligence Engine</p>
+        </div>
+        <div class="badge-user">
+            👤 <strong>CHAUHAN RAJ K</strong> | Roll: 20241CIT0119 | S5 (2024CIT02)
+        </div>
+    </header>
+
+    <div class="grid-stats">
+        <div class="stat-card">
+            <h3>Remaining Instructional Days</h3>
+            <div class="val" style="color: var(--accent);">9 Days</div>
+            <div class="sub">19-Nov-2026 to 01-Dec-2026</div>
+        </div>
+        <div class="stat-card">
+            <h3>Last Day of Instruction</h3>
+            <div class="val" style="color: var(--warning);">Dec 01, 2026</div>
+            <div class="sub">Odd Semester 2026–27 End</div>
+        </div>
+        <div class="stat-card">
+            <h3>Current Consolidated Attendance</h3>
+            <div class="val" style="color: #34d399;">78.77%</div>
+            <div class="sub">282 Attended (with DL) / 358 Total</div>
+        </div>
+        <div class="stat-card">
+            <h3>University Target Threshold</h3>
+            <div class="val" style="color: #a78bfa;">75.00%</div>
+            <div class="sub">Minimum Required to Write Exams</div>
+        </div>
+    </div>
+
+    <!-- Attendance Table -->
+    <div class="section-box">
+        <h2>
+            📊 Course-Wise Attendance & Bunk Prediction (Target: 75%)
+            <span style="font-size: 0.85rem; font-weight: 400; color: var(--text-muted);">Official Linways Attended Hours + Duty Leave</span>
+        </h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Course Code & Name</th>
+                    <th>Current (AH+DL / TH)</th>
+                    <th>Current %</th>
+                    <th>Remaining Classes</th>
+                    <th>Final Total Classes</th>
+                    <th>Must Attend (to hit 75%)</th>
+                    <th>Max Bunks Allowed</th>
+                    <th>Max Possible %</th>
+                    <th>Action / Recommendation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>APT4006</strong><br><span style="color: var(--text-muted); font-size: 0.8rem;">Logical and Critical Thinking</span></td>
+                    <td>16 / 20</td>
+                    <td><strong>80.00%</strong></td>
+                    <td>4</td>
+                    <td>24</td>
+                    <td>2 / 4</td>
+                    <td><strong style="color: #34d399; font-size: 1.1rem;">2</strong></td>
+                    <td>83.33%</td>
+                    <td><span class="tag tag-safe">SAFE (Can bunk 2)</span></td>
+                </tr>
+                <tr>
+                    <td><strong>CBC2000</strong><br><span style="color: var(--text-muted); font-size: 0.8rem;">Foundations of Blockchain Technology</span></td>
+                    <td>24 / 34</td>
+                    <td><strong>70.59%</strong></td>
+                    <td>6</td>
+                    <td>40</td>
+                    <td>6 / 6</td>
+                    <td><strong style="color: #f87171; font-size: 1.1rem;">0</strong></td>
+                    <td>75.00%</td>
+                    <td><span class="tag tag-critical">CRITICAL (Must attend all 6)</span></td>
+                </tr>
+                <tr>
+                    <td><strong>CIT2500</strong><br><span style="color: var(--text-muted); font-size: 0.8rem;">FoG Computing for IoT</span></td>
+                    <td>24 / 33</td>
+                    <td><strong>72.73%</strong></td>
+                    <td>5</td>
+                    <td>38</td>
+                    <td>5 / 5</td>
+                    <td><strong style="color: #f87171; font-size: 1.1rem;">0</strong></td>
+                    <td>76.32%</td>
+                    <td><span class="tag tag-critical">CRITICAL (Must attend all 5)</span></td>
+                </tr>
+                <tr>
+                    <td><strong>CIT2501</strong><br><span style="color: var(--text-muted); font-size: 0.8rem;">Wireless Communication in IoT</span></td>
+                    <td>26 / 33</td>
+                    <td><strong>78.79%</strong></td>
+                    <td>6</td>
+                    <td>39</td>
+                    <td>4 / 6</td>
+                    <td><strong style="color: #34d399; font-size: 1.1rem;">2</strong></td>
+                    <td>82.05%</td>
+                    <td><span class="tag tag-safe">SAFE (Can bunk 2)</span></td>
+                </tr>
+                <tr>
+                    <td><strong>CIT2502</strong><br><span style="color: var(--text-muted); font-size: 0.8rem;">Privacy and Security in IoT</span></td>
+                    <td>29 / 37</td>
+                    <td><strong>78.38%</strong></td>
+                    <td>5</td>
+                    <td>42</td>
+                    <td>3 / 5</td>
+                    <td><strong style="color: #34d399; font-size: 1.1rem;">2</strong></td>
+                    <td>80.95%</td>
+                    <td><span class="tag tag-safe">SAFE (Can bunk 2)</span></td>
+                </tr>
+                <tr>
+                    <td><strong>CIT2503</strong><br><span style="color: var(--text-muted); font-size: 0.8rem;">Mobile Application for IoT</span></td>
+                    <td>27 / 38</td>
+                    <td><strong>71.05%</strong></td>
+                    <td>6</td>
+                    <td>44</td>
+                    <td>6 / 6</td>
+                    <td><strong style="color: #f87171; font-size: 1.1rem;">0</strong></td>
+                    <td>75.00%</td>
+                    <td><span class="tag tag-critical">CRITICAL (Must attend all 6)</span></td>
+                </tr>
+                <tr>
+                    <td><strong>CIT3402</strong><br><span style="color: var(--text-muted); font-size: 0.8rem;">IoT Architecture and Protocols</span></td>
+                    <td>44 / 49</td>
+                    <td><strong>89.80%</strong></td>
+                    <td>8</td>
+                    <td>57</td>
+                    <td>0 / 8</td>
+                    <td><strong style="color: #34d399; font-size: 1.1rem;">8</strong></td>
+                    <td>91.23%</td>
+                    <td><span class="tag tag-safe">SUPER SAFE (Can bunk all 8!)</span></td>
+                </tr>
+                <tr>
+                    <td><strong>CSS2264</strong><br><span style="color: var(--text-muted); font-size: 0.8rem;">Essentials of AI</span></td>
+                    <td>31 / 37</td>
+                    <td><strong>83.78%</strong></td>
+                    <td>5</td>
+                    <td>42</td>
+                    <td>1 / 5</td>
+                    <td><strong style="color: #34d399; font-size: 1.1rem;">4</strong></td>
+                    <td>85.71%</td>
+                    <td><span class="tag tag-safe">SAFE (Can bunk 4)</span></td>
+                </tr>
+                <tr style="background: rgba(239, 68, 68, 0.05);">
+                    <td><strong>CSS2265</strong><br><span style="color: var(--text-muted); font-size: 0.8rem;">Essentials of AI Lab</span></td>
+                    <td>18 / 26</td>
+                    <td><strong style="color: #f87171;">69.23%</strong></td>
+                    <td>4</td>
+                    <td>30</td>
+                    <td>5 / 4</td>
+                    <td><strong style="color: #f87171; font-size: 1.1rem;">0</strong></td>
+                    <td>73.33%</td>
+                    <td><span class="tag tag-shortage">SHORTAGE (Needs +1 DL/Attendance adjustment)</span></td>
+                </tr>
+                <tr>
+                    <td><strong>CSS2285</strong><br><span style="color: var(--text-muted); font-size: 0.8rem;">Cloud Computing</span></td>
+                    <td>21 / 25</td>
+                    <td><strong>84.00%</strong></td>
+                    <td>4</td>
+                    <td>29</td>
+                    <td>1 / 4</td>
+                    <td><strong style="color: #34d399; font-size: 1.1rem;">3</strong></td>
+                    <td>86.21%</td>
+                    <td><span class="tag tag-safe">SAFE (Can bunk 3)</span></td>
+                </tr>
+                <tr>
+                    <td><strong>CSS2286</strong><br><span style="color: var(--text-muted); font-size: 0.8rem;">Cloud Computing Lab</span></td>
+                    <td>22 / 26</td>
+                    <td><strong>84.62%</strong></td>
+                    <td>2</td>
+                    <td>28</td>
+                    <td>0 / 2</td>
+                    <td><strong style="color: #34d399; font-size: 1.1rem;">2</strong></td>
+                    <td>85.71%</td>
+                    <td><span class="tag tag-safe">SUPER SAFE (Can bunk all 2!)</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Remaining Calendar Days Breakdown -->
+    <div class="section-box">
+        <h2>📅 Remaining Instructional Schedule (Nov 19 to Dec 01)</h2>
+        <div class="calendar-timeline">
+            <div class="timeline-row today">
+                <div><strong>Thursday, Nov 19 (Today)</strong> • 7 Hours Scheduled</div>
+                <div><span class="tag tag-safe">Instructional Day 1/9</span></div>
+            </div>
+            <div class="timeline-row">
+                <div><strong>Friday, Nov 20</strong> • 5 Hours (CIT2503, CBC2000, CIT2502, CSS2265 Lab x2)</div>
+                <div><span class="tag tag-safe">Instructional Day 2/9</span></div>
+            </div>
+            <div class="timeline-row" style="opacity: 0.6;">
+                <div><strong>Saturday, Nov 21 & Sunday, Nov 22</strong> • Weekend</div>
+                <div><span class="tag" style="background:#334155; color:#cbd5e1;">Holiday</span></div>
+            </div>
+            <div class="timeline-row">
+                <div><strong>Monday, Nov 23</strong> • 6 Hours (CBC2000, CIT2500, CSS2264, CIT3402, CIT2501, CSS2285)</div>
+                <div><span class="tag tag-safe">Instructional Day 3/9</span></div>
+            </div>
+            <div class="timeline-row">
+                <div><strong>Tuesday, Nov 24</strong> • 7 Hours (APT4006 x2, CIT2500, CIT2501, CBC2000, CIT2503, CIT3402)</div>
+                <div><span class="tag tag-safe">Instructional Day 4/9</span></div>
+            </div>
+            <div class="timeline-row">
+                <div><strong>Wednesday, Nov 25</strong> • 5 Hours (CSS2264, CIT2502, CSS2286 Lab x2, CIT2500)</div>
+                <div><span class="tag tag-safe">Instructional Day 5/9</span></div>
+            </div>
+            <div class="timeline-row">
+                <div><strong>Thursday, Nov 26</strong> • 7 Hours (CIT2503, CIT2502, CSS2285, CIT2501, CSS2264, CIT3402 Lab x2)</div>
+                <div><span class="tag tag-safe">Instructional Day 6/9</span></div>
+            </div>
+            <div class="timeline-row">
+                <div><strong>Friday, Nov 27</strong> • 5 Hours (CIT2503, CBC2000, CIT2502, CSS2265 Lab x2)</div>
+                <div><span class="tag tag-safe">Instructional Day 7/9</span></div>
+            </div>
+            <div class="timeline-row" style="opacity: 0.6;">
+                <div><strong>Saturday, Nov 28</strong> • Convocation & <strong>Sunday, Nov 29</strong> • Weekend</div>
+                <div><span class="tag" style="background:#334155; color:#cbd5e1;">No Classes</span></div>
+            </div>
+            <div class="timeline-row">
+                <div><strong>Monday, Nov 30</strong> • 6 Hours (CBC2000, CIT2500, CSS2264, CIT3402, CIT2501, CSS2285)</div>
+                <div><span class="tag tag-safe">Instructional Day 8/9</span></div>
+            </div>
+            <div class="timeline-row last-day">
+                <div><strong>Tuesday, Dec 01</strong> • Last Day Of Instruction For Odd Semester 2026–27 (7 Hours)</div>
+                <div><span class="tag tag-critical">FINAL INSTRUCTIONAL DAY 9/9</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Weekly Timetable View -->
+    <div class="section-box">
+        <h2>⏰ Weekly Class Schedule Timetable</h2>
+        <div class="timetable-grid">
+            <div class="day-column">
+                <h4>Monday (6 Classes)</h4>
+                <div class="hour-item"><div class="hour-num">Hour 1 (08:50 - 09:45)</div><div class="hour-subject">CBC2000 - Blockchain</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 2 (09:45 - 10:40)</div><div class="hour-subject">CIT2500 - FoG Computing</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 3 (10:50 - 11:45)</div><div class="hour-subject">CSS2264 - Essentials of AI</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 6 (01:25 - 02:20)</div><div class="hour-subject">CIT3402 - IoT Architecture</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 7 (02:30 - 03:25)</div><div class="hour-subject">CIT2501 - Wireless Comm</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 8 (03:25 - 04:15)</div><div class="hour-subject">CSS2285 - Cloud Computing</div></div>
+            </div>
+
+            <div class="day-column">
+                <h4>Tuesday (7 Classes)</h4>
+                <div class="hour-item"><div class="hour-num">Hour 1 (08:50 - 09:45)</div><div class="hour-subject">APT4006 - Logical Thinking</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 2 (09:45 - 10:40)</div><div class="hour-subject">APT4006 - Logical Thinking</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 3 (10:50 - 11:45)</div><div class="hour-subject">CIT2500 - FoG Computing</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 4 (11:45 - 12:35)</div><div class="hour-subject">CIT2501 - Wireless Comm</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 6 (01:25 - 02:20)</div><div class="hour-subject">CBC2000 - Blockchain</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 7 (02:30 - 03:25)</div><div class="hour-subject">CIT2503 - Mobile App for IoT</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 8 (03:25 - 04:15)</div><div class="hour-subject">CIT3402 - IoT Architecture</div></div>
+            </div>
+
+            <div class="day-column">
+                <h4>Wednesday (5 Classes)</h4>
+                <div class="hour-item"><div class="hour-num">Hour 1 (08:50 - 09:45)</div><div class="hour-subject">CSS2264 - Essentials of AI</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 2 (09:45 - 10:40)</div><div class="hour-subject">CIT2502 - Privacy & Sec in IoT</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 3 (10:50 - 11:45)</div><div class="hour-subject">CSS2286 - Cloud Lab Batch-II</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 4 (11:45 - 12:35)</div><div class="hour-subject">CSS2286 - Cloud Lab Batch-II</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 6 (01:25 - 02:20)</div><div class="hour-subject">CIT2500 - FoG Computing</div></div>
+            </div>
+
+            <div class="day-column">
+                <h4>Thursday (7 Classes)</h4>
+                <div class="hour-item"><div class="hour-num">Hour 1 (08:50 - 09:45)</div><div class="hour-subject">CIT2503 - Mobile App for IoT</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 2 (09:45 - 10:40)</div><div class="hour-subject">CIT2502 - Privacy & Sec in IoT</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 3 (10:50 - 11:45)</div><div class="hour-subject">CSS2285 - Cloud Computing</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 4 (11:45 - 12:35)</div><div class="hour-subject">CIT2501 - Wireless Comm</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 6 (01:25 - 02:20)</div><div class="hour-subject">CSS2264 - Essentials of AI</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 7 (02:30 - 03:25)</div><div class="hour-subject">CIT3402_P - IoT Lab Batch-I</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 8 (03:25 - 04:15)</div><div class="hour-subject">CIT3402_P - IoT Lab Batch-I</div></div>
+            </div>
+
+            <div class="day-column">
+                <h4>Friday (5 Classes)</h4>
+                <div class="hour-item"><div class="hour-num">Hour 3 (10:50 - 11:45)</div><div class="hour-subject">CIT2503 - Mobile App for IoT</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 4 (11:45 - 12:35)</div><div class="hour-subject">CBC2000 - Blockchain</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 6 (01:25 - 02:20)</div><div class="hour-subject">CIT2502 - Privacy & Sec in IoT</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 7 (02:30 - 03:25)</div><div class="hour-subject">CSS2265 - AI Lab Batch-II</div></div>
+                <div class="hour-item"><div class="hour-num">Hour 8 (03:25 - 04:15)</div><div class="hour-subject">CSS2265 - AI Lab Batch-II</div></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

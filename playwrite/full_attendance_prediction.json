@@ -1,0 +1,695 @@
+{
+  "data": {
+    "student": {
+      "Student Name": "CHAUHAN RAJ K",
+      "Roll No": "20241CIT0119",
+      "Registration No": "20241CIT0119",
+      "Batch/Section": "2024CIT02",
+      "Department": "PSAIAC",
+      "Term": "S5"
+    },
+    "courses": [
+      {
+        "sl_no": "1",
+        "course_name": "Logical and Critical Thinking ( APT4006 )",
+        "code": "APT4006",
+        "TH": 20,
+        "AH": 14,
+        "DL": 2,
+        "AH_DL": 16,
+        "AH_pct": 70.0,
+        "AHDL_pct": 80.0
+      },
+      {
+        "sl_no": "2",
+        "course_name": "Foundations of Blockchain Technology ( CBC2000 )",
+        "code": "CBC2000",
+        "TH": 34,
+        "AH": 21,
+        "DL": 3,
+        "AH_DL": 24,
+        "AH_pct": 61.76,
+        "AHDL_pct": 70.59
+      },
+      {
+        "sl_no": "3",
+        "course_name": "FoG Computing for IoT ( CIT2500 )",
+        "code": "CIT2500",
+        "TH": 33,
+        "AH": 22,
+        "DL": 2,
+        "AH_DL": 24,
+        "AH_pct": 66.67,
+        "AHDL_pct": 72.73
+      },
+      {
+        "sl_no": "4",
+        "course_name": "Wireless Communication in IoT ( CIT2501 )",
+        "code": "CIT2501",
+        "TH": 33,
+        "AH": 23,
+        "DL": 3,
+        "AH_DL": 26,
+        "AH_pct": 69.7,
+        "AHDL_pct": 78.79
+      },
+      {
+        "sl_no": "5",
+        "course_name": "Privacy and Security in IoT ( CIT2502 )",
+        "code": "CIT2502",
+        "TH": 37,
+        "AH": 27,
+        "DL": 2,
+        "AH_DL": 29,
+        "AH_pct": 72.97,
+        "AHDL_pct": 78.38
+      },
+      {
+        "sl_no": "6",
+        "course_name": "Mobile Application for IoT ( CIT2503 )",
+        "code": "CIT2503",
+        "TH": 38,
+        "AH": 24,
+        "DL": 3,
+        "AH_DL": 27,
+        "AH_pct": 63.16,
+        "AHDL_pct": 71.05
+      },
+      {
+        "sl_no": "7",
+        "course_name": "IoT Architecture and Protocols ( CIT3402 )",
+        "code": "CIT3402",
+        "TH": 49,
+        "AH": 40,
+        "DL": 4,
+        "AH_DL": 44,
+        "AH_pct": 81.63,
+        "AHDL_pct": 89.8
+      },
+      {
+        "sl_no": "8",
+        "course_name": "Universal Human Values and Ethics ( CIV7601 )",
+        "code": "CIV7601",
+        "TH": 0,
+        "AH": 0,
+        "DL": 0,
+        "AH_DL": 0,
+        "AH_pct": 0.0,
+        "AHDL_pct": 0.0
+      },
+      {
+        "sl_no": "9",
+        "course_name": "Essentials of AI ( CSS2264 )",
+        "code": "CSS2264",
+        "TH": 37,
+        "AH": 29,
+        "DL": 2,
+        "AH_DL": 31,
+        "AH_pct": 78.38,
+        "AHDL_pct": 83.78
+      },
+      {
+        "sl_no": "10",
+        "course_name": "Essentials of AI Lab ( CSS2265 )",
+        "code": "CSS2265",
+        "TH": 26,
+        "AH": 16,
+        "DL": 2,
+        "AH_DL": 18,
+        "AH_pct": 61.54,
+        "AHDL_pct": 69.23
+      },
+      {
+        "sl_no": "11",
+        "course_name": "Cloud Computing ( CSS2285 )",
+        "code": "CSS2285",
+        "TH": 25,
+        "AH": 19,
+        "DL": 2,
+        "AH_DL": 21,
+        "AH_pct": 76.0,
+        "AHDL_pct": 84.0
+      },
+      {
+        "sl_no": "12",
+        "course_name": "Cloud Computing Lab ( CSS2286 )",
+        "code": "CSS2286",
+        "TH": 26,
+        "AH": 22,
+        "DL": 0,
+        "AH_DL": 22,
+        "AH_pct": 84.62,
+        "AHDL_pct": 84.62
+      },
+      {
+        "sl_no": "13",
+        "course_name": "Internship ( CSS7000 )",
+        "code": "CSS7000",
+        "TH": 0,
+        "AH": 0,
+        "DL": 0,
+        "AH_DL": 0,
+        "AH_pct": 0.0,
+        "AHDL_pct": 0.0
+      }
+    ],
+    "timetable": {
+      "Monday": [
+        {
+          "hour": 1,
+          "details": "CBC2000 - Foundations of Blockchain Technology - Rakheeba Taseen - 2024CIT02_P - +1 - 08:50 AM - 09:45 AM - Class Room :NS04"
+        },
+        {
+          "hour": 2,
+          "details": "CIT2500 - FoG Computing for IoT - Lakshmisha S K - 2024CIT02_P - +1 - 09:45 AM - 10:40 AM - Class Room :NS04"
+        },
+        {
+          "hour": 3,
+          "details": "CSS2264 - Essentials of AI - AMREEN KHANUM D - 2024CIT02 - 10:50 AM - 11:45 AM - Class Room :NS04"
+        },
+        {
+          "hour": 4,
+          "details": "Free"
+        },
+        {
+          "hour": 5,
+          "details": "Free"
+        },
+        {
+          "hour": 6,
+          "details": "DEB2 - CIT3402 - Geetha Arjunan - 2024CIT02 - +1 - 01:25 PM - 02:20 PM - Class Room :NS02"
+        },
+        {
+          "hour": 7,
+          "details": "CIT2501 - Wireless Communication in IoT - ROBIN ROHIT VINCENT - 2024CIT02 - 02:30 PM - 03:25 PM - Class Room :NS04"
+        },
+        {
+          "hour": 8,
+          "details": "CSS2285 - Cloud Computing - Padma T G - 2024CIT02 - 03:25 PM - 04:15 PM - Class Room :NS04"
+        }
+      ],
+      "Tuesday": [
+        {
+          "hour": 1,
+          "details": "APT4006 - Logical and Critical Thinking - SHWETA BABLI - 2024CIT02 - 08:50 AM - 09:45 AM - Class Room :NS04"
+        },
+        {
+          "hour": 2,
+          "details": "APT4006 - Logical and Critical Thinking - SHWETA BABLI - 2024CIT02 - 09:45 AM - 10:40 AM - Class Room :NS04"
+        },
+        {
+          "hour": 3,
+          "details": "CIT2500 - FoG Computing for IoT - Lakshmisha S K - 2024CIT02_P - +1 - 10:50 AM - 11:45 AM - Class Room :NS04"
+        },
+        {
+          "hour": 4,
+          "details": "CIT2501 - Wireless Communication in IoT - ROBIN ROHIT VINCENT - 2024CIT02 - 11:45 AM - 12:35 PM - Class Room :NS04"
+        },
+        {
+          "hour": 5,
+          "details": "Free"
+        },
+        {
+          "hour": 6,
+          "details": "CBC2000 - Foundations of Blockchain Technology - Rakheeba Taseen - 2024CIT02 - +1 - 01:25 PM - 02:20 PM - Class Room :NS04"
+        },
+        {
+          "hour": 7,
+          "details": "CIT2503 - Mobile Application for IoT - Ranjitha P - 2024CIT02 - 02:30 PM - 03:25 PM - Class Room :NS04"
+        },
+        {
+          "hour": 8,
+          "details": "DEB2 - CIT3402 - Geetha Arjunan - 2024CIT03 - +1 - 03:25 PM - 04:15 PM - Class Room :NS02"
+        }
+      ],
+      "Wednesday": [
+        {
+          "hour": 1,
+          "details": "CSS2264 - Essentials of AI - AMREEN KHANUM D - 2024CIT02 - 08:50 AM - 09:45 AM - Class Room :NS04"
+        },
+        {
+          "hour": 2,
+          "details": "CIT2502 - Privacy and Security in IoT - Gopal Kumar Mishra - 2024CIT02_P - +1 - 09:45 AM - 10:40 AM - Class Room :NS04"
+        },
+        {
+          "hour": 3,
+          "details": "CSS2286 - Lab Batch - II - Sriramparabrahmachari - 2024CIT02 - 10:50 AM - 11:45 AM - Class Room :DFL02"
+        },
+        {
+          "hour": 4,
+          "details": "CSS2286 - Lab Batch - II - Sriramparabrahmachari - 2024CIT02 - 11:45 AM - 12:35 PM - Class Room :DFL02"
+        },
+        {
+          "hour": 5,
+          "details": "Free"
+        },
+        {
+          "hour": 6,
+          "details": "CIT2500 - FoG Computing for IoT - Lakshmisha S K - 2024CIT02 - +1 - 01:25 PM - 02:20 PM - Class Room :NS04"
+        },
+        {
+          "hour": 7,
+          "details": "Free"
+        },
+        {
+          "hour": 8,
+          "details": "Free"
+        }
+      ],
+      "Thursday": [
+        {
+          "hour": 1,
+          "details": "CIT2503 - Mobile Application for IoT - Ranjitha P - 2024CIT02 - 08:50 AM - 09:45 AM - Class Room :NS04"
+        },
+        {
+          "hour": 2,
+          "details": "CIT2502 - Privacy and Security in IoT - Gopal Kumar Mishra - 2024CIT02_P - +1 - 09:45 AM - 10:40 AM - Class Room :NS04"
+        },
+        {
+          "hour": 3,
+          "details": "CSS2285 - Cloud Computing - Padma T G - 2024CIT02 - 10:50 AM - 11:45 AM - Class Room :NS04"
+        },
+        {
+          "hour": 4,
+          "details": "CIT2501 - Wireless Communication in IoT - ROBIN ROHIT VINCENT - 2024CIT02 - 11:45 AM - 12:35 PM - Class Room :NS04"
+        },
+        {
+          "hour": 5,
+          "details": "Free"
+        },
+        {
+          "hour": 6,
+          "details": "CSS2264 - Essentials of AI - AMREEN KHANUM D - 2024CIT02 - 01:25 PM - 02:20 PM - Class Room :NS04"
+        },
+        {
+          "hour": 7,
+          "details": "DEB2 Lab Batch - I CIT3402_P - Geetha Arjunan - 2024CIT03 - +1 - 02:30 PM - 03:25 PM - Class Room :DSL02"
+        },
+        {
+          "hour": 8,
+          "details": "DEB2 Lab Batch - I CIT3402_P - Geetha Arjunan - 2024CIT02 - +1 - 03:25 PM - 04:15 PM - Class Room :DSL02"
+        }
+      ],
+      "Friday": [
+        {
+          "hour": 1,
+          "details": "Free"
+        },
+        {
+          "hour": 2,
+          "details": "Free"
+        },
+        {
+          "hour": 3,
+          "details": "CIT2503 - Mobile Application for IoT - Ranjitha P - 2024CIT02 - 10:50 AM - 11:45 AM - Class Room :NS04"
+        },
+        {
+          "hour": 4,
+          "details": "CBC2000 - Foundations of Blockchain Technology - Rakheeba Taseen - 2024CIT02_P - +1 - 11:45 AM - 12:35 PM - Class Room :NS04"
+        },
+        {
+          "hour": 5,
+          "details": "Free"
+        },
+        {
+          "hour": 6,
+          "details": "CIT2502 - Privacy and Security in IoT - Gopal Kumar Mishra - 2024CIT02_P - +1 - 01:25 PM - 02:20 PM - Class Room :NS04"
+        },
+        {
+          "hour": 7,
+          "details": "CSS2265 - Lab Batch - II - Sriramparabrahmachari - 2024CIT02 - 02:30 PM - 03:25 PM - Class Room :DGL04"
+        },
+        {
+          "hour": 8,
+          "details": "CSS2265 - Lab Batch - II - Sriramparabrahmachari - 2024CIT02 - 03:25 PM - 04:15 PM - Class Room :DGL04"
+        }
+      ],
+      "Saturday": [
+        {
+          "hour": 1,
+          "details": "Free"
+        },
+        {
+          "hour": 2,
+          "details": "Free"
+        },
+        {
+          "hour": 3,
+          "details": "Free"
+        },
+        {
+          "hour": 4,
+          "details": "Free"
+        },
+        {
+          "hour": 5,
+          "details": "Free"
+        },
+        {
+          "hour": 6,
+          "details": "Free"
+        },
+        {
+          "hour": 7,
+          "details": "Free"
+        },
+        {
+          "hour": 8,
+          "details": "Free"
+        }
+      ]
+    },
+    "last_instruction_date": "2026-12-01"
+  },
+  "analysis": {
+    "instructional_days_count": 9,
+    "instructional_days": [
+      [
+        "2026-11-19",
+        "Thursday"
+      ],
+      [
+        "2026-11-20",
+        "Friday"
+      ],
+      [
+        "2026-11-23",
+        "Monday"
+      ],
+      [
+        "2026-11-24",
+        "Tuesday"
+      ],
+      [
+        "2026-11-25",
+        "Wednesday"
+      ],
+      [
+        "2026-11-26",
+        "Thursday"
+      ],
+      [
+        "2026-11-27",
+        "Friday"
+      ],
+      [
+        "2026-11-30",
+        "Monday"
+      ],
+      [
+        "2026-12-01",
+        "Tuesday"
+      ]
+    ],
+    "remaining_by_code": {
+      "CIT2503": 6,
+      "CIT2502": 5,
+      "CSS2285": 4,
+      "CIT2501": 6,
+      "CSS2264": 5,
+      "CIT3402": 8,
+      "CBC2000": 6,
+      "CSS2265": 4,
+      "CIT2500": 5,
+      "APT4006": 4,
+      "CSS2286": 2
+    },
+    "predictions": [
+      {
+        "code": "APT4006",
+        "name": "Logical and Critical Thinking ( APT4006 )",
+        "current_th": 20,
+        "attended_pure": 14,
+        "duty_leave": 2,
+        "attended_with_dl": 16,
+        "current_pct_pure": 70.0,
+        "current_pct_with_dl": 80.0,
+        "remaining_classes": 4,
+        "final_total_classes": 24,
+        "target_75": {
+          "needed_total": 18,
+          "must_attend": 2,
+          "max_bunks": 2,
+          "status": "SAFE: Can bunk 2 class(es) (Attend 2/4)"
+        },
+        "target_80": {
+          "needed_total": 20,
+          "must_attend": 4,
+          "max_bunks": 0
+        },
+        "max_possible_pct": 83.33,
+        "min_possible_pct": 66.67
+      },
+      {
+        "code": "CBC2000",
+        "name": "Foundations of Blockchain Technology ( CBC2000 )",
+        "current_th": 34,
+        "attended_pure": 21,
+        "duty_leave": 3,
+        "attended_with_dl": 24,
+        "current_pct_pure": 61.76,
+        "current_pct_with_dl": 70.59,
+        "remaining_classes": 6,
+        "final_total_classes": 40,
+        "target_75": {
+          "needed_total": 30,
+          "must_attend": 6,
+          "max_bunks": 0,
+          "status": "CRITICAL: Must attend ALL 6 classes (0 bunks)"
+        },
+        "target_80": {
+          "needed_total": 32,
+          "must_attend": 8,
+          "max_bunks": 0
+        },
+        "max_possible_pct": 75.0,
+        "min_possible_pct": 60.0
+      },
+      {
+        "code": "CIT2500",
+        "name": "FoG Computing for IoT ( CIT2500 )",
+        "current_th": 33,
+        "attended_pure": 22,
+        "duty_leave": 2,
+        "attended_with_dl": 24,
+        "current_pct_pure": 66.67,
+        "current_pct_with_dl": 72.73,
+        "remaining_classes": 5,
+        "final_total_classes": 38,
+        "target_75": {
+          "needed_total": 29,
+          "must_attend": 5,
+          "max_bunks": 0,
+          "status": "CRITICAL: Must attend ALL 5 classes (0 bunks)"
+        },
+        "target_80": {
+          "needed_total": 31,
+          "must_attend": 7,
+          "max_bunks": 0
+        },
+        "max_possible_pct": 76.32,
+        "min_possible_pct": 63.16
+      },
+      {
+        "code": "CIT2501",
+        "name": "Wireless Communication in IoT ( CIT2501 )",
+        "current_th": 33,
+        "attended_pure": 23,
+        "duty_leave": 3,
+        "attended_with_dl": 26,
+        "current_pct_pure": 69.7,
+        "current_pct_with_dl": 78.79,
+        "remaining_classes": 6,
+        "final_total_classes": 39,
+        "target_75": {
+          "needed_total": 30,
+          "must_attend": 4,
+          "max_bunks": 2,
+          "status": "SAFE: Can bunk 2 class(es) (Attend 4/6)"
+        },
+        "target_80": {
+          "needed_total": 32,
+          "must_attend": 6,
+          "max_bunks": 0
+        },
+        "max_possible_pct": 82.05,
+        "min_possible_pct": 66.67
+      },
+      {
+        "code": "CIT2502",
+        "name": "Privacy and Security in IoT ( CIT2502 )",
+        "current_th": 37,
+        "attended_pure": 27,
+        "duty_leave": 2,
+        "attended_with_dl": 29,
+        "current_pct_pure": 72.97,
+        "current_pct_with_dl": 78.38,
+        "remaining_classes": 5,
+        "final_total_classes": 42,
+        "target_75": {
+          "needed_total": 32,
+          "must_attend": 3,
+          "max_bunks": 2,
+          "status": "SAFE: Can bunk 2 class(es) (Attend 3/5)"
+        },
+        "target_80": {
+          "needed_total": 34,
+          "must_attend": 5,
+          "max_bunks": 0
+        },
+        "max_possible_pct": 80.95,
+        "min_possible_pct": 69.05
+      },
+      {
+        "code": "CIT2503",
+        "name": "Mobile Application for IoT ( CIT2503 )",
+        "current_th": 38,
+        "attended_pure": 24,
+        "duty_leave": 3,
+        "attended_with_dl": 27,
+        "current_pct_pure": 63.16,
+        "current_pct_with_dl": 71.05,
+        "remaining_classes": 6,
+        "final_total_classes": 44,
+        "target_75": {
+          "needed_total": 33,
+          "must_attend": 6,
+          "max_bunks": 0,
+          "status": "CRITICAL: Must attend ALL 6 classes (0 bunks)"
+        },
+        "target_80": {
+          "needed_total": 36,
+          "must_attend": 9,
+          "max_bunks": 0
+        },
+        "max_possible_pct": 75.0,
+        "min_possible_pct": 61.36
+      },
+      {
+        "code": "CIT3402",
+        "name": "IoT Architecture and Protocols ( CIT3402 )",
+        "current_th": 49,
+        "attended_pure": 40,
+        "duty_leave": 4,
+        "attended_with_dl": 44,
+        "current_pct_pure": 81.63,
+        "current_pct_with_dl": 89.8,
+        "remaining_classes": 8,
+        "final_total_classes": 57,
+        "target_75": {
+          "needed_total": 43,
+          "must_attend": 0,
+          "max_bunks": 8,
+          "status": "SAFE: Can bunk 8 class(es) (Attend 0/8)"
+        },
+        "target_80": {
+          "needed_total": 46,
+          "must_attend": 2,
+          "max_bunks": 6
+        },
+        "max_possible_pct": 91.23,
+        "min_possible_pct": 77.19
+      },
+      {
+        "code": "CSS2264",
+        "name": "Essentials of AI ( CSS2264 )",
+        "current_th": 37,
+        "attended_pure": 29,
+        "duty_leave": 2,
+        "attended_with_dl": 31,
+        "current_pct_pure": 78.38,
+        "current_pct_with_dl": 83.78,
+        "remaining_classes": 5,
+        "final_total_classes": 42,
+        "target_75": {
+          "needed_total": 32,
+          "must_attend": 1,
+          "max_bunks": 4,
+          "status": "SAFE: Can bunk 4 class(es) (Attend 1/5)"
+        },
+        "target_80": {
+          "needed_total": 34,
+          "must_attend": 3,
+          "max_bunks": 2
+        },
+        "max_possible_pct": 85.71,
+        "min_possible_pct": 73.81
+      },
+      {
+        "code": "CSS2265",
+        "name": "Essentials of AI Lab ( CSS2265 )",
+        "current_th": 26,
+        "attended_pure": 16,
+        "duty_leave": 2,
+        "attended_with_dl": 18,
+        "current_pct_pure": 61.54,
+        "current_pct_with_dl": 69.23,
+        "remaining_classes": 4,
+        "final_total_classes": 30,
+        "target_75": {
+          "needed_total": 23,
+          "must_attend": 5,
+          "max_bunks": 0,
+          "status": "SHORTAGE: Short by 1 class even with 100% attendance"
+        },
+        "target_80": {
+          "needed_total": 24,
+          "must_attend": 6,
+          "max_bunks": 0
+        },
+        "max_possible_pct": 73.33,
+        "min_possible_pct": 60.0
+      },
+      {
+        "code": "CSS2285",
+        "name": "Cloud Computing ( CSS2285 )",
+        "current_th": 25,
+        "attended_pure": 19,
+        "duty_leave": 2,
+        "attended_with_dl": 21,
+        "current_pct_pure": 76.0,
+        "current_pct_with_dl": 84.0,
+        "remaining_classes": 4,
+        "final_total_classes": 29,
+        "target_75": {
+          "needed_total": 22,
+          "must_attend": 1,
+          "max_bunks": 3,
+          "status": "SAFE: Can bunk 3 class(es) (Attend 1/4)"
+        },
+        "target_80": {
+          "needed_total": 24,
+          "must_attend": 3,
+          "max_bunks": 1
+        },
+        "max_possible_pct": 86.21,
+        "min_possible_pct": 72.41
+      },
+      {
+        "code": "CSS2286",
+        "name": "Cloud Computing Lab ( CSS2286 )",
+        "current_th": 26,
+        "attended_pure": 22,
+        "duty_leave": 0,
+        "attended_with_dl": 22,
+        "current_pct_pure": 84.62,
+        "current_pct_with_dl": 84.62,
+        "remaining_classes": 2,
+        "final_total_classes": 28,
+        "target_75": {
+          "needed_total": 21,
+          "must_attend": 0,
+          "max_bunks": 2,
+          "status": "SAFE: Can bunk 2 class(es) (Attend 0/2)"
+        },
+        "target_80": {
+          "needed_total": 23,
+          "must_attend": 1,
+          "max_bunks": 1
+        },
+        "max_possible_pct": 85.71,
+        "min_possible_pct": 78.57
+      }
+    ]
+  }
+}

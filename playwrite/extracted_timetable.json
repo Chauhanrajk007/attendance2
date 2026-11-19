@@ -1,0 +1,206 @@
+{
+  "16 November, 2026 Monday": [
+    {
+      "hour": 1,
+      "details": "CBC2000 - Foundations of Blockchain Technology - Rakheeba Taseen - 2024CIT02_P - +1 - 08:50 AM - 09:45 AM - Class Room :NS04"
+    },
+    {
+      "hour": 2,
+      "details": "CIT2500 - FoG Computing for IoT - Lakshmisha S K - 2024CIT02_P - +1 - 09:45 AM - 10:40 AM - Class Room :NS04"
+    },
+    {
+      "hour": 3,
+      "details": "CSS2264 - Essentials of AI - AMREEN KHANUM D - 2024CIT02 - 10:50 AM - 11:45 AM - Class Room :NS04"
+    },
+    {
+      "hour": 4,
+      "details": "Free"
+    },
+    {
+      "hour": 5,
+      "details": "Free"
+    },
+    {
+      "hour": 6,
+      "details": "DEB2 - CIT3402 - Geetha Arjunan - 2024CIT02 - +1 - 01:25 PM - 02:20 PM - Class Room :NS02"
+    },
+    {
+      "hour": 7,
+      "details": "CIT2501 - Wireless Communication in IoT - ROBIN ROHIT VINCENT - 2024CIT02 - 02:30 PM - 03:25 PM - Class Room :NS04"
+    },
+    {
+      "hour": 8,
+      "details": "CSS2285 - Cloud Computing - Padma T G - 2024CIT02 - 03:25 PM - 04:15 PM - Class Room :NS04"
+    }
+  ],
+  "17 November, 2026 Tuesday": [
+    {
+      "hour": 1,
+      "details": "APT4006 - Logical and Critical Thinking - SHWETA BABLI - 2024CIT02 - 08:50 AM - 09:45 AM - Class Room :NS04"
+    },
+    {
+      "hour": 2,
+      "details": "APT4006 - Logical and Critical Thinking - SHWETA BABLI - 2024CIT02 - 09:45 AM - 10:40 AM - Class Room :NS04"
+    },
+    {
+      "hour": 3,
+      "details": "CIT2500 - FoG Computing for IoT - Lakshmisha S K - 2024CIT02_P - +1 - 10:50 AM - 11:45 AM - Class Room :NS04"
+    },
+    {
+      "hour": 4,
+      "details": "CIT2501 - Wireless Communication in IoT - ROBIN ROHIT VINCENT - 2024CIT02 - 11:45 AM - 12:35 PM - Class Room :NS04"
+    },
+    {
+      "hour": 5,
+      "details": "Free"
+    },
+    {
+      "hour": 6,
+      "details": "CBC2000 - Foundations of Blockchain Technology - Rakheeba Taseen - 2024CIT02 - +1 - 01:25 PM - 02:20 PM - Class Room :NS04"
+    },
+    {
+      "hour": 7,
+      "details": "CIT2503 - Mobile Application for IoT - Ranjitha P - 2024CIT02 - 02:30 PM - 03:25 PM - Class Room :NS04"
+    },
+    {
+      "hour": 8,
+      "details": "DEB2 - CIT3402 - Geetha Arjunan - 2024CIT03 - +1 - 03:25 PM - 04:15 PM - Class Room :NS02"
+    }
+  ],
+  "18 November, 2026 Wednesday": [
+    {
+      "hour": 1,
+      "details": "CSS2264 - Essentials of AI - AMREEN KHANUM D - 2024CIT02 - 08:50 AM - 09:45 AM - Class Room :NS04"
+    },
+    {
+      "hour": 2,
+      "details": "CIT2502 - Privacy and Security in IoT - Gopal Kumar Mishra - 2024CIT02_P - +1 - 09:45 AM - 10:40 AM - Class Room :NS04"
+    },
+    {
+      "hour": 3,
+      "details": "CSS2286 - Lab Batch - II - Sriramparabrahmachari - 2024CIT02 - 10:50 AM - 11:45 AM - Class Room :DFL02"
+    },
+    {
+      "hour": 4,
+      "details": "CSS2286 - Lab Batch - II - Sriramparabrahmachari - 2024CIT02 - 11:45 AM - 12:35 PM - Class Room :DFL02"
+    },
+    {
+      "hour": 5,
+      "details": "Free"
+    },
+    {
+      "hour": 6,
+      "details": "CIT2500 - FoG Computing for IoT - Lakshmisha S K - 2024CIT02 - +1 - 01:25 PM - 02:20 PM - Class Room :NS04"
+    },
+    {
+      "hour": 7,
+      "details": "Free"
+    },
+    {
+      "hour": 8,
+      "details": "Free"
+    }
+  ],
+  "19 November, 2026 Thursday": [
+    {
+      "hour": 1,
+      "details": "CIT2503 - Mobile Application for IoT - Ranjitha P - 2024CIT02 - 08:50 AM - 09:45 AM - Class Room :NS04"
+    },
+    {
+      "hour": 2,
+      "details": "CIT2502 - Privacy and Security in IoT - Gopal Kumar Mishra - 2024CIT02_P - +1 - 09:45 AM - 10:40 AM - Class Room :NS04"
+    },
+    {
+      "hour": 3,
+      "details": "CSS2285 - Cloud Computing - Padma T G - 2024CIT02 - 10:50 AM - 11:45 AM - Class Room :NS04"
+    },
+    {
+      "hour": 4,
+      "details": "CIT2501 - Wireless Communication in IoT - ROBIN ROHIT VINCENT - 2024CIT02 - 11:45 AM - 12:35 PM - Class Room :NS04"
+    },
+    {
+      "hour": 5,
+      "details": "Free"
+    },
+    {
+      "hour": 6,
+      "details": "CSS2264 - Essentials of AI - AMREEN KHANUM D - 2024CIT02 - 01:25 PM - 02:20 PM - Class Room :NS04"
+    },
+    {
+      "hour": 7,
+      "details": "DEB2 Lab Batch - I CIT3402_P - Geetha Arjunan - 2024CIT03 - +1 - 02:30 PM - 03:25 PM - Class Room :DSL02"
+    },
+    {
+      "hour": 8,
+      "details": "DEB2 Lab Batch - I CIT3402_P - Geetha Arjunan - 2024CIT02 - +1 - 03:25 PM - 04:15 PM - Class Room :DSL02"
+    }
+  ],
+  "20 November, 2026 Friday": [
+    {
+      "hour": 1,
+      "details": "Free"
+    },
+    {
+      "hour": 2,
+      "details": "Free"
+    },
+    {
+      "hour": 3,
+      "details": "CIT2503 - Mobile Application for IoT - Ranjitha P - 2024CIT02 - 10:50 AM - 11:45 AM - Class Room :NS04"
+    },
+    {
+      "hour": 4,
+      "details": "CBC2000 - Foundations of Blockchain Technology - Rakheeba Taseen - 2024CIT02_P - +1 - 11:45 AM - 12:35 PM - Class Room :NS04"
+    },
+    {
+      "hour": 5,
+      "details": "Free"
+    },
+    {
+      "hour": 6,
+      "details": "CIT2502 - Privacy and Security in IoT - Gopal Kumar Mishra - 2024CIT02_P - +1 - 01:25 PM - 02:20 PM - Class Room :NS04"
+    },
+    {
+      "hour": 7,
+      "details": "CSS2265 - Lab Batch - II - Sriramparabrahmachari - 2024CIT02 - 02:30 PM - 03:25 PM - Class Room :DGL04"
+    },
+    {
+      "hour": 8,
+      "details": "CSS2265 - Lab Batch - II - Sriramparabrahmachari - 2024CIT02 - 03:25 PM - 04:15 PM - Class Room :DGL04"
+    }
+  ],
+  "21 November, 2026 Saturday": [
+    {
+      "hour": 1,
+      "details": "Free"
+    },
+    {
+      "hour": 2,
+      "details": "Free"
+    },
+    {
+      "hour": 3,
+      "details": "Free"
+    },
+    {
+      "hour": 4,
+      "details": "Free"
+    },
+    {
+      "hour": 5,
+      "details": "Free"
+    },
+    {
+      "hour": 6,
+      "details": "Free"
+    },
+    {
+      "hour": 7,
+      "details": "Free"
+    },
+    {
+      "hour": 8,
+      "details": "Free"
+    }
+  ]
+}

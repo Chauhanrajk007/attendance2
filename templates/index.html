@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AttendTrack | Degree Defense & Bunk Simulator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <!-- Top Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+          </svg>
+        </div>
+        <div>
+          <span class="brand-title">AttendTrack</span>
+          <span class="brand-badge">Degree Defense & Schedule Simulator</span>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <button class="btn btn-outline" id="btnOpenUploadModal">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          Upload Files
+        </button>
+        <button class="btn btn-primary" id="btnOpenPlaywrightModal">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          🤖 Run Playwright Scraper
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="main-container">
+    <!-- Student Profile & Settings Header (AT START) -->
+    <section class="student-header card">
+      <div class="student-info-grid">
+        <div class="student-primary">
+          <div class="avatar-circle" id="studentInitials">CR</div>
+          <div>
+            <h1 class="student-name" id="studentName">Chauhan Raj K</h1>
+            <div class="student-meta">
+              <span id="studentRoll">Roll: 20241CIT0119</span> &bull;
+              <span id="studentBatch">Batch: 2024CIT02</span> &bull;
+              <span id="studentTerm">Term: S5 (Odd Sem)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-pill-group">
+          <!-- Expected OD Claim at Start: Day-based & Hour-based -->
+          <div class="setting-item od-highlight-box" style="min-width: 290px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <label style="font-weight:700;">🎖️ Event OD Days Claimed</label>
+              <button type="button" class="btn btn-xs btn-outline" id="btnClearOdDays" style="padding:0.1rem 0.45rem; font-size:0.68rem;">Clear</button>
+            </div>
+            <!-- Quick Day Selection Buttons: Mon, Tue, Wed, Thu, Fri, Sat -->
+            <div class="od-days-pills" id="odDaysPillsContainer" style="display:flex; gap:0.3rem; margin:0.35rem 0;">
+              <button type="button" class="od-day-pill" data-day="Monday">Mon</button>
+              <button type="button" class="od-day-pill" data-day="Tuesday">Tue</button>
+              <button type="button" class="od-day-pill" data-day="Wednesday">Wed</button>
+              <button type="button" class="od-day-pill" data-day="Thursday">Thu</button>
+              <button type="button" class="od-day-pill" data-day="Friday">Fri</button>
+              <button type="button" class="od-day-pill" data-day="Saturday">Sat</button>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; font-size:0.75rem; color:var(--text-secondary);">
+              <span id="lblOdDaysSummary">Select missed day(s) for event/fest</span>
+              <span id="lblOdHoursCount" style="font-weight:700; color:var(--text-main);">0 hrs credited</span>
+            </div>
+          </div>
+
+          <div class="setting-item">
+            <label for="targetThreshold">Target Minimum</label>
+            <select id="targetThreshold" class="form-select">
+              <option value="75" selected>75% (Mandatory Cutoff)</option>
+              <option value="80">80% (Safe Buffer)</option>
+              <option value="85">85% (Scholarship/Honors)</option>
+            </select>
+          </div>
+
+          <div class="setting-item">
+            <label>Semester Horizon</label>
+            <span class="auto-badge" id="lblSemesterHorizon">📅 Ends Dec 01, 2026 (10 days left)</span>
+          </div>
+
+          <div class="setting-item checkbox-item">
+            <label>
+              <input type="checkbox" id="chkUseDL" checked>
+              <span>Count Duty Leave (DL)</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Key Metrics Grid -->
+    <section class="metrics-grid">
+      <div class="metric-card card">
+        <div class="metric-header">
+          <span class="metric-label">Current Attendance</span>
+          <span class="status-indicator-dot safe" id="overallStatusDot"></span>
+        </div>
+        <div class="metric-value-row">
+          <div class="metric-huge" id="overallCurrentPct">78.77%</div>
+          <div class="projected-metric-pill" id="overallProjectedPill">
+            <span>Projected:</span>
+            <strong id="overallProjectedPct">78.77%</strong>
+          </div>
+        </div>
+        <div class="metric-progress-bg">
+          <div class="metric-progress-bar safe" id="overallProgressBar" style="width: 78.77%;"></div>
+        </div>
+        <div class="metric-footer-text" id="overallHoursDetail">
+          282 Attended (257 AH + 25 DL) / 358 Total Hours
+        </div>
+      </div>
+
+      <div class="metric-card card">
+        <div class="metric-header">
+          <span class="metric-label">Total Safe Bunks Available</span>
+          <span class="metric-icon-bubble">🏖️</span>
+        </div>
+        <div class="metric-huge text-emerald" id="totalSafeBunksCount">14</div>
+        <div class="metric-footer-text">
+          Lectures you can skip today while staying above <span class="lblTarget">75%</span>
+        </div>
+      </div>
+
+      <div class="metric-card card">
+        <div class="metric-header">
+          <span class="metric-label">Critical Subjects (< 75%)</span>
+          <span class="metric-icon-bubble alert">⚠️</span>
+        </div>
+        <div class="metric-huge text-rose" id="criticalSubjectsCount">4</div>
+        <div class="metric-footer-text" id="criticalSubjectsList">
+          CBC2000, CIT2500, CIT2503, CSS2265
+        </div>
+      </div>
+
+      <div class="metric-card card">
+        <div class="metric-header">
+          <span class="metric-label">Semester Countdown</span>
+          <span class="metric-icon-bubble">📅</span>
+        </div>
+        <div class="metric-huge text-slate" id="daysRemainingCount">10</div>
+        <div class="metric-footer-text">
+          Working days left until <span id="lblLastWorkingDay">Dec 01, 2026</span>
+        </div>
+      </div>
+
+      <div class="metric-card card">
+        <div class="metric-header">
+          <span class="metric-label">Expected ODs Planned</span>
+          <span class="metric-icon-bubble">🎖️</span>
+        </div>
+        <div class="metric-huge text-blue" id="totalOdsPlannedCount">0 hrs</div>
+        <div class="metric-footer-text" id="odsGainSummary">
+          Duty Leaves credited for events/fests
+        </div>
+      </div>
+    </section>
+
+    <!-- Mode Explainer Banner: Bunk Mode vs Event OD Mode -->
+    <section class="mode-explainer-banner card">
+      <div class="explainer-content">
+        <div class="explainer-side">
+          <div class="explainer-icon">🌴</div>
+          <div>
+            <strong>Bunk Mode (Personal Skip)</strong>
+            <p>Skipping classes for sleep or personal plans &rarr; marked <em>Absent</em>, drops your attendance percentage.</p>
+          </div>
+        </div>
+        <div class="explainer-divider"></div>
+        <div class="explainer-side">
+          <div class="explainer-icon">🎖️</div>
+          <div>
+            <strong>Event OD Mode (Duty Leave)</strong>
+            <p>Attending hackathons, fests, or sports &rarr; marked <em>Duty Leave (DL)</em>, protects and boosts your attendance!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 1: WEEKLY LECTURE SCHEDULE & DAY BUNK SIMULATOR (DEGREE DEFENSE 🎓) -->
+    <section class="card schedule-simulator-section" id="weeklyScheduleSection">
+      <div class="section-collapse-header" id="scheduleToggleHeader" title="Click to toggle Weekly Lecture Schedule">
+        <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+          <h2 class="section-title" style="margin:0;">📅 Weekly Lecture Schedule & Day Bunk Simulator</h2>
+          <span class="sarcastic-tag">Degree Defense 🎓</span>
+          <span class="collapse-hint-pill" id="scheduleCollapseHint">Click to Collapse ▲</span>
+        </div>
+        <div style="display:flex; gap:0.5rem; align-items:center;">
+          <button class="btn btn-sm btn-outline" id="btnResetAllBunks" onclick="event.stopPropagation();">Reset All Bunks & ODs</button>
+          <span class="collapse-icon-arrow" id="scheduleCollapseIcon">▲</span>
+        </div>
+      </div>
+
+      <!-- Collapsible Container -->
+      <div class="collapsible-schedule-body" id="scheduleCollapsibleBody">
+        <!-- Day Selector Bar: Calendar Picker, Day Pills, Dropdown, Batch Buttons, & Add/Remove Day -->
+        <div class="simple-day-selector-bar">
+          <div class="day-pills-row">
+            <button class="day-pill-btn" data-day="Monday">Mon</button>
+            <button class="day-pill-btn" data-day="Tuesday">Tue</button>
+            <button class="day-pill-btn" data-day="Wednesday">Wed</button>
+            <button class="day-pill-btn" data-day="Thursday">Thu</button>
+            <button class="day-pill-btn active" data-day="Friday">Fri</button>
+            <button class="day-pill-btn" data-day="Saturday">Sat</button>
+          </div>
+
+          <!-- Calendar Date Picker -->
+          <div class="calendar-picker-wrapper">
+            <label class="calendar-picker-label" for="scheduleDatePicker" title="Pick a calendar date to view its timetable">
+              <span class="cal-icon">📅</span>
+              <span id="selectedDateDisplay">Fri, Nov 20</span>
+            </label>
+            <input type="date" id="scheduleDatePicker" class="day-date-input" value="2026-11-20" min="2026-08-01" max="2026-12-05">
+          </div>
+
+          <div class="day-dropdown-wrapper">
+            <select id="scheduleDayDropdown" class="form-select day-select-dropdown">
+              <option value="Monday">Monday (6 classes)</option>
+              <option value="Tuesday">Tuesday (7 classes)</option>
+              <option value="Wednesday">Wednesday (5 classes)</option>
+              <option value="Thursday">Thursday (7 classes)</option>
+              <option value="Friday" selected>Friday (5 classes)</option>
+              <option value="Saturday">Saturday (Free / Make-up)</option>
+            </select>
+          </div>
+
+          <!-- The 3 Full Day Action Buttons -->
+          <div class="day-batch-actions">
+            <button class="btn btn-sm btn-outline" id="btnDayBunkAll" title="Mark all non-free classes for this day as Absent">😴 Bunk Full Day</button>
+            <button class="btn btn-sm btn-outline" id="btnDayODAll" title="Mark all non-free classes for this day as Duty Leave (OD)">🎖️ Mark Full Day OD</button>
+            <button class="btn btn-sm btn-outline" id="btnDayReset" title="Reset all periods for this day back to attended">🔄 Reset Day</button>
+            <button class="btn btn-sm btn-outline" id="btnOpenScheduleOverride" title="Add Saturday make-up classes or mark holidays">⚙️ Overrides / Sat</button>
+          </div>
+        </div>
+
+        <!-- Toggle View Periods Pill -->
+        <div class="periods-toggle-bar">
+          <span class="periods-view-status" id="lblPeriodsViewStatus">Showing classes for <strong id="lblActiveDayName">Friday</strong></span>
+          <button class="btn btn-xs btn-outline" id="btnTogglePeriodsVisibility">Hide Periods</button>
+        </div>
+
+        <!-- Day Periods Container (Expands when a day is selected) -->
+        <div class="day-periods-wrapper" id="dayPeriodsWrapper">
+          <!-- Schedule Legend Bar -->
+          <div class="schedule-legend-bar">
+            <div class="legend-items">
+              <span class="legend-item"><span class="legend-dot dot-green"></span> <strong>Green:</strong> Safe to Bunk (&ge;75%)</span>
+              <span class="legend-item"><span class="legend-dot dot-orange"></span> <strong>Orange:</strong> Borderline (70% - 75%)</span>
+              <span class="legend-item"><span class="legend-dot dot-red"></span> <strong>Red:</strong> DO NOT BUNK (&lt;70% or Critical)</span>
+            </div>
+            <span class="sarcastic-comment-inline" id="lblSarcasticComment">"Friday afternoon lab? Living dangerously."</span>
+          </div>
+
+          <!-- List of Classes for Selected Day with Bunk/OD Options -->
+          <div class="selected-day-periods-grid" id="dayPeriodsContainer">
+            <!-- Rendered dynamically via JavaScript -->
+          </div>
+
+          <!-- Sarcastic Reality Check Banner -->
+          <div class="sarcastic-verdict-box" id="sarcasticVerdictBox">
+            <div class="verdict-icon" id="verdictIcon">🍸</div>
+            <div class="verdict-text">
+              <strong id="verdictHeadline">Calculated Genius.</strong>
+              <p id="verdictSub">78.77% overall attendance. You're surviving, but keep one eye on CBC2000.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: COURSE BREAKDOWN TABLE & REAL-TIME BUNK/OD CONTROLS (DIRECTLY BELOW WEEKLY SCHEDULE) -->
+    <section class="card table-card" id="courseBreakdownSection">
+      <div class="section-title-bar">
+        <div>
+          <h2 class="section-title">📊 Course Breakdown Table & Real-Time Bunk/OD Controls</h2>
+          <p class="section-subtitle">Real-time sync: Any changes in the Weekly Lecture Schedule or steppers immediately update percentages below.</p>
+        </div>
+        <div class="table-actions-right">
+          <!-- 1-Click Grok 75% Optimizer Button -->
+          <button class="btn btn-primary btn-sm" id="btnGrokOptimize75" title="Automatically calculate safe bunks and mandatory attendances to reach >= 75%">
+            ⚡ Ask Grok to Optimize for 75%
+          </button>
+          <div class="search-input-wrapper">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="courseSearchInput" placeholder="Filter subjects...">
+          </div>
+          <div class="filter-pills">
+            <button class="filter-pill active" data-filter="all">All (<span id="coursesCountBadge">13</span>)</button>
+            <button class="filter-pill" data-filter="critical">Below 75%</button>
+            <button class="filter-pill" data-filter="safe">Safe (&ge;75%)</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="courses-table" id="coursesTable">
+          <thead>
+            <tr>
+              <th>Course Code & Title</th>
+              <th>Hours (AH + DL / TH)</th>
+              <th>Current %</th>
+              <th>Simulate Bunk / Attend / OD</th>
+              <th>Projected %</th>
+              <th>Safe Bunks & ODs Needed</th>
+              <th>Remaining Classes till Dec 1</th>
+            </tr>
+          </thead>
+          <tbody id="coursesTableBody">
+            <!-- Dynamically populated via JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECTION 3: GROK AI ATTENDANCE ADVISOR -->
+    <section class="card grok-card" id="grokAdvisorSection">
+      <div class="grok-header-row">
+        <div class="grok-badge-group">
+          <span class="ai-avatar">🤖</span>
+          <div>
+            <h3 class="section-title">Grok Academic & Bunk Strategist</h3>
+            <span class="text-muted" id="grokStatusLabel">Powered by xAI Grok API with Local Intelligence Engine</span>
+          </div>
+        </div>
+        <button class="btn btn-outline btn-sm" id="btnEditGrokKey">API Key Settings</button>
+      </div>
+
+      <div class="grok-query-box">
+        <input type="text" id="grokQueryInput" class="form-input" placeholder="e.g. Can I bunk Blockchain tomorrow? How many leaves can I take before Dec 1?">
+        <button class="btn btn-primary" id="btnAskGrok">Ask Grok</button>
+      </div>
+
+      <div class="grok-response-box" id="grokResponseContainer">
+        <div class="loading-state" id="grokLoading" style="display: none;">
+          <div class="spinner"></div>
+          <span>Grok is evaluating your timetable and bunk scenarios...</span>
+        </div>
+        <div class="markdown-body" id="grokResponseText">
+          <!-- Grok advice injected here -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Playwright Scraper Modal with LIVE Execution Terminal -->
+  <div class="modal-overlay" id="playwrightModal" style="display: none;">
+    <div class="modal-card modal-large">
+      <div class="modal-header">
+        <h3 class="modal-title">🤖 Live Playwright AMS Scraper</h3>
+        <button class="modal-close-btn" id="btnClosePlaywrightModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-intro">
+          Playwright automates Chromium in the background, logs into Linways AMS, and retrieves your official attendance report, weekly timetable, and academic calendar.
+        </p>
+
+        <form id="playwrightForm">
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.75rem; margin-bottom: 0.75rem;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" for="amsUsername">Linways Student ID / Username</label>
+              <input type="text" id="amsUsername" class="form-input" placeholder="e.g. 2024/448" value="2024/448" required>
+            </div>
+
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" for="amsPassword">Portal Password</label>
+              <div class="password-toggle-wrapper">
+                <input type="password" id="amsPassword" class="form-input password-input-field" placeholder="Password" value="Komala@9821" required>
+                <button type="button" class="btn-password-toggle" id="btnTogglePassword" title="Show/Hide Password">
+                  <span id="pwToggleIcon">👁️</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between;">
+            <label style="display:flex; align-items:center; gap:0.4rem; font-size:0.8rem; cursor:pointer; color:var(--text-secondary);">
+              <input type="checkbox" id="chkHeadedBrowser">
+              <span>Show live Chromium window on desktop (Headed mode)</span>
+            </label>
+          </div>
+
+          <!-- Live Playwright Visual Execution Terminal & Live Browser Viewport -->
+          <div class="terminal-console" id="playwrightConsole" style="display: none;">
+            <!-- Live Simulated Browser Viewport -->
+            <div class="browser-window-preview">
+              <div class="browser-window-header">
+                <div class="browser-dots">
+                  <span class="browser-dot red"></span>
+                  <span class="browser-dot yellow"></span>
+                  <span class="browser-dot green"></span>
+                </div>
+                <div class="browser-address-bar">
+                  <span class="browser-lock">🔒</span>
+                  <input type="text" id="playwrightBrowserUrl" readonly value="https://presidencyuniversity.linways.com/ams/student/login">
+                </div>
+                <span class="browser-status-badge" id="playwrightStatusBadge">🟢 Chromium Active</span>
+              </div>
+              <div class="browser-viewport-screen">
+                <img id="playwrightLiveViewportImg" src="/static/screenshots/login_page.png" alt="Playwright Live Screen">
+                <div class="browser-viewport-caption" id="playwrightViewportCaption">
+                  [Step 1] Navigating to Presidency University AMS Portal...
+                </div>
+              </div>
+            </div>
+
+            <!-- Terminal Stream Bar -->
+            <div class="terminal-header">
+              <span class="terminal-dot red"></span>
+              <span class="terminal-dot yellow"></span>
+              <span class="terminal-dot green"></span>
+              <span class="terminal-title">Playwright Event Log Stream</span>
+            </div>
+            <div class="terminal-body" id="playwrightTerminalLogs">
+              <!-- Logs stream here -->
+            </div>
+          </div>
+
+          <div class="modal-footer" style="display:flex; justify-content:space-between; align-items:center; margin-top: 1rem;">
+            <button type="button" class="btn btn-outline" id="btnQuickLoadCached">⚡ Instant Campus Demo</button>
+            <div style="display:flex; gap:0.5rem;">
+              <button type="button" class="btn btn-outline" id="btnCancelPlaywright">Cancel</button>
+              <button type="submit" class="btn btn-primary" id="btnRunPlaywright">Run Playwright Scrape</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Schedule Override Modal: Add Saturday Make-up, Mark Holiday, or Ask Grok -->
+  <div class="modal-overlay" id="scheduleOverrideModal" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">⚙️ Working Day & Holiday Overrides</h3>
+        <button class="modal-close-btn" id="btnCloseScheduleOverrideModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-intro">
+          Handle special campus schedule adjustments, such as make-up Saturdays or festival holidays:
+        </p>
+
+        <!-- Option 1: Add Working Saturday / Day -->
+        <div class="card" style="margin-bottom: 1rem; padding: 1rem; background-color: var(--bg-card-subtle);">
+          <strong style="display:block; margin-bottom: 0.4rem;">➕ Add Working Saturday / Make-Up Day</strong>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.5rem; align-items:end;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label-sm">Follow Timetable Of:</label>
+              <select id="selectSaturdayTimetableSource" class="form-select">
+                <option value="Tuesday" selected>Tuesday's Timetable</option>
+                <option value="Monday">Monday's Timetable</option>
+                <option value="Wednesday">Wednesday's Timetable</option>
+                <option value="Thursday">Thursday's Timetable</option>
+                <option value="Friday">Friday's Timetable</option>
+              </select>
+            </div>
+            <button class="btn btn-primary btn-sm" id="btnApplySaturdayTimetable">Apply to Saturday</button>
+          </div>
+        </div>
+
+        <!-- Option 2: Mark Holiday -->
+        <div class="card" style="margin-bottom: 1rem; padding: 1rem; background-color: var(--bg-card-subtle);">
+          <strong style="display:block; margin-bottom: 0.4rem;">🌴 Declare Day as Holiday (No Classes)</strong>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.5rem; align-items:end;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label-sm">Select Day to Clear:</label>
+              <select id="selectHolidayDay" class="form-select">
+                <option value="Wednesday">Wednesday (Midweek Holiday)</option>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday" selected>Saturday</option>
+              </select>
+            </div>
+            <button class="btn btn-outline btn-sm text-rose" id="btnApplyDayHoliday">Mark as Holiday</button>
+          </div>
+        </div>
+
+        <!-- Option 3: Ask Grok Quick Presets -->
+        <div style="margin-bottom: 0.5rem;">
+          <label class="form-label-sm">⚡ Quick Presets (Ask Grok to Apply):</label>
+          <div style="display:flex; gap:0.4rem; flex-wrap:wrap; margin-top:0.35rem;">
+            <button class="btn btn-xs btn-outline" id="btnPresetSatTue">Saturday = Tuesday</button>
+            <button class="btn btn-xs btn-outline" id="btnPresetWedHoliday">Wednesday = Holiday</button>
+            <button class="btn btn-xs btn-outline" id="btnPresetResetStandard">Reset to Standard</button>
+          </div>
+        </div>
+
+        <div class="modal-footer" style="margin-top:1rem;">
+          <button type="button" class="btn btn-outline" id="btnCloseScheduleOverride">Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upload Modal -->
+  <div class="modal-overlay" id="uploadModal" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Upload Timetable & Attendance Files</h3>
+        <button class="modal-close-btn" id="btnCloseUploadModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-intro">Upload your files saved from AMS Linways or any semester report:</p>
+        <form id="uploadForm">
+          <div class="form-group">
+            <label class="form-label">Attendance Report (PDF, Image, HTML, CSV, or JSON)</label>
+            <input type="file" name="attendance_file" id="inputAttFile" accept=".pdf,.png,.jpg,.jpeg,.webp,.html,.htm,.csv,.json" class="file-input">
+            <span class="file-hint">Supports PDF reports, screenshots/photos (.png, .jpg), HTML, CSV, or JSON</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Weekly Timetable (PDF, Image, HTML, or JSON)</label>
+            <input type="file" name="timetable_file" id="inputTtFile" accept=".pdf,.png,.jpg,.jpeg,.webp,.html,.htm,.json" class="file-input">
+            <span class="file-hint">Supports timetable PDF, image, HTML, or JSON</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Academic Calendar (HTML or JSON - optional)</label>
+            <input type="file" name="calendar_file" id="inputCalFile" accept=".pdf,.html,.htm,.json" class="file-input">
+            <span class="file-hint">e.g. academic_calendar_page.html or PDF</span>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline" id="btnCancelUpload">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="btnSubmitUpload">Parse & Load Dashboard</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grok Key Modal -->
+  <div class="modal-overlay" id="grokKeyModal" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Grok (xAI) API Settings</h3>
+        <button class="modal-close-btn" id="btnCloseGrokKeyModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Grok / xAI API Key</label>
+          <input type="text" id="inputGrokKey" class="form-input" placeholder="xai-..." value="grok_443f54258b809316350ff1df6dd0accc_c8d7b09d18d63d5f2ea1e01e91f14ad40e4d877ba90237302004ef3479da9c1d">
+          <span class="file-hint">If using xAI console key, it typically starts with <code>xai-</code>. The app also includes an offline heuristic advisor.</span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" id="btnSaveGrokKey">Save Settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
